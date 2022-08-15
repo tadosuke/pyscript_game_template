@@ -5,6 +5,7 @@ import asyncio
 from js import (
     console,
     document,
+    Element,
 )
 
 from pyscript_controller import GameController
@@ -14,6 +15,10 @@ from pyscript_view import GameView, PyScriptRenderer
 
 #: ゲームのFPS
 _FPS = 1.0 / 30
+#: 画面幅
+SCREEN_WIDTH = 600
+#: 画面高さ
+SCREEN_HEIGHT = 400
 
 #: プリロードする画像ファイル名
 _PRELOAD_IMAGE_FILES: list[str] = [
@@ -23,10 +28,7 @@ _PRELOAD_IMAGE_FILES: list[str] = [
 
 async def main() -> None:
     """メイン関数."""
-    canvas = document.querySelector('#output')
-    if canvas is None:
-        console.error('canvas is None')
-        return
+    canvas = _setup_canvas()
 
     try:
         model = GameModel()
@@ -41,6 +43,15 @@ async def main() -> None:
         model.update(_FPS)
         view.draw()
         await asyncio.sleep(_FPS)
+
+
+def _setup_canvas() -> Element:
+    canvas = document.querySelector('#output')
+    if canvas is None:
+        raise ValueError('canvas is None')
+    canvas.width = SCREEN_WIDTH
+    canvas.height = SCREEN_HEIGHT
+    return canvas
 
 
 if __name__ == '__main__':

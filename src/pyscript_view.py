@@ -14,12 +14,6 @@ from model import GameModel
 from values import *
 
 
-#: 画面幅
-WIDTH = 600
-#: 画面高さ
-HEIGHT = 400
-
-
 class AbstractRenderer:
     """描画の抽象クラス."""
     pass
@@ -37,8 +31,6 @@ class PyScriptRenderer(AbstractRenderer):
         if canvas is None:
             raise ValueError('canvas is None')
         self._canvas = canvas
-        self._canvas.width = WIDTH
-        self._canvas.height = HEIGHT
         self._ctx = canvas.getContext('2d')
 
     @property
