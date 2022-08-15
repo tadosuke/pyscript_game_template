@@ -14,19 +14,6 @@ from model import GameModel
 from values import *
 
 
-def draw_circle(ctx: CanvasRenderingContext2D, center: tuple[int, int], radius: int, fill_style: str) -> None:
-    """円の描画."""
-    angle_start = 0 * math.pi / 180
-    angle_end = 360 * math.pi / 180
-
-    (x, y) = center
-    ctx.beginPath()
-    ctx.fillStyle = fill_style
-    ctx.arc(x, y, radius, angle_start, angle_end)
-    ctx.fill()
-    ctx.closePath()
-
-
 def draw_image(ctx: CanvasRenderingContext2D, image: Image, position: Position, size: Size) -> None:
     """画像の描画."""
     ctx.drawImage(image, position.x, position.y, size.width, size.height)
@@ -60,6 +47,18 @@ class PyScriptRenderer:
         self._ctx.moveTo(*start_pos)
         self._ctx.lineTo(*end_pos)
         self._ctx.stroke()
+        self._ctx.closePath()
+
+    def draw_circle(self, center: tuple[int, int], radius: int, fill_style: str) -> None:
+        """円の描画."""
+        angle_start = 0 * math.pi / 180
+        angle_end = 360 * math.pi / 180
+
+        (x, y) = center
+        self._ctx.beginPath()
+        self._ctx.fillStyle = fill_style
+        self._ctx.arc(x, y, radius, angle_start, angle_end)
+        self._ctx.fill()
         self._ctx.closePath()
 
 
@@ -147,8 +146,7 @@ class GameView:
             end_pos=(200, 120),
             stroke_style='rgb(200, 0, 0)')
 
-        draw_circle(
-            self._ctx,
+        self._renderer.draw_circle(
             center=(200, 200),
             radius=50,
             fill_style='rgb(0, 0, 200)')
