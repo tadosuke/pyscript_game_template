@@ -46,6 +46,7 @@ async def main() -> None:
 
 
 def _setup_canvas() -> Element:
+    """canvasをセットアップする."""
     canvas = document.querySelector('#output')
     if canvas is None:
         raise ValueError('canvas is None')
