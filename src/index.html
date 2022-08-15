@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>PyScript GameTemplate</title>
+
+  <!-- pyscriptを使えるようにするために必要な2行 -->
+  <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+  <script defer src="https://pyscript.net/alpha/pyscript.js" />
+  </script>
+
+  <!-- 外部モジュール定義 -->
+  <py-env>
+    - paths:
+      - model.py
+      - input.py
+      - values.py
+      - pyscript_controller.py
+      - pyscript_view.py
+  </py-env>
+</head>
+
+<body>
+  <canvas id="output" />
+  <py-script src="application.py"></py-script>
+</body>
+
+</html>
