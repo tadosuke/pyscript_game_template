@@ -16,7 +16,34 @@ from values import *
 
 class AbstractRenderer:
     """描画の抽象クラス."""
-    pass
+
+    @property
+    def size(self) -> Size:
+        pass
+
+    def clear(self):
+        """画面をクリアする."""
+        pass
+
+    def draw_rect(self, rect: Rect, fill_style: str) -> None:
+        """矩形の描画."""
+        pass
+
+    def draw_line(self, start_pos: tuple[int, int], end_pos: tuple[int, int], stroke_style: str) -> None:
+        """線の描画."""
+        pass
+
+    def draw_circle(self, center: tuple[int, int], radius: int, fill_style: str) -> None:
+        """円の描画."""
+        pass
+
+    def draw_image(self, image: Image, position: Position, size: Size) -> None:
+        """画像の描画."""
+        pass
+
+    def draw_text(self, text: str, position: tuple[int, int], font: str, fill_style: str) -> None:
+        """テキストの描画."""
+        pass
 
 
 class PyScriptRenderer(AbstractRenderer):
@@ -35,7 +62,13 @@ class PyScriptRenderer(AbstractRenderer):
 
     @property
     def size(self) -> Size:
+        """サイズ."""
         return Size(self._canvas.width, self._canvas.height)
+
+    def clear(self):
+        """画面をクリアする."""
+        self._ctx.fillStyle = self.BACK_GROUND_COLOR
+        self._ctx.fillRect(0, 0, self.size.width, self.size.height)
 
     def draw_text(self, text: str, position: tuple[int, int], font: str, fill_style: str) -> None:
         """テキストの描画."""
@@ -74,11 +107,6 @@ class PyScriptRenderer(AbstractRenderer):
     def draw_image(self, image: Image, position: Position, size: Size) -> None:
         """画像の描画."""
         self._ctx.drawImage(image, position.x, position.y, size.width, size.height)
-
-    def clear(self):
-        """画面をクリアする."""
-        self._ctx.fillStyle = self.BACK_GROUND_COLOR
-        self._ctx.fillRect(0, 0, self.size.width, self.size.height)
 
 
 class GameView:
