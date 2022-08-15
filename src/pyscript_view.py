@@ -2,7 +2,6 @@
 
 from js import (
     console,
-    document,
     Element,
 )
 
