@@ -22,12 +22,17 @@ class PyScriptRenderer:
 
     def __init__(
             self,
+            canvas: Element,
             context: CanvasRenderingContext2D,
             size: Size) -> None:
+        if canvas is None:
+            raise ValueError('canvas is None')
+        self._canvas = canvas
+
         if context is None:
             raise ValueError('context is None')
-        self._size = size
         self._ctx = context
+        self._size = size
 
     def draw_text(self, text: str, position: tuple[int, int], font: str, fill_style: str) -> None:
         """テキストの描画."""
@@ -103,6 +108,7 @@ class GameView:
         self._canvas = canvas
         self._setup_canvas()
         self._renderer = PyScriptRenderer(
+            self._canvas,
             canvas.getContext('2d'),
             Size(self.WIDTH, self.HEIGHT))
 
