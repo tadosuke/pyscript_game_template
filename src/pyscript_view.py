@@ -37,15 +37,6 @@ def draw_circle(ctx: CanvasRenderingContext2D, center: tuple[int, int], radius: 
     ctx.closePath()
 
 
-def draw_text(ctx: CanvasRenderingContext2D, text: str, position: tuple[int, int], font: str, fill_style: str) -> None:
-    """テキストの描画."""
-    (x, y) = position
-    text = text
-    ctx.font = font
-    ctx.fillStyle = fill_style
-    ctx.fillText(text, x, y)
-
-
 def draw_rect(ctx: CanvasRenderingContext2D, rect: Rect, fill_style: str) -> None:
     """矩形の描画."""
     ctx.fillStyle = fill_style
@@ -55,6 +46,23 @@ def draw_rect(ctx: CanvasRenderingContext2D, rect: Rect, fill_style: str) -> Non
 def draw_image(ctx: CanvasRenderingContext2D, image: Image, position: Position, size: Size) -> None:
     """画像の描画."""
     ctx.drawImage(image, position.x, position.y, size.width, size.height)
+
+
+class PyScriptRenderer:
+    """PyScript用の描画クラス."""
+
+    def __init__(self, context: CanvasRenderingContext2D) -> None:
+        if context is None:
+            raise ValueError('context is None')
+        self._ctx = context
+
+    def draw_text(self, text: str, position: tuple[int, int], font: str, fill_style: str) -> None:
+        """テキストの描画."""
+        (x, y) = position
+        text = text
+        self._ctx.font = font
+        self._ctx.fillStyle = fill_style
+        self._ctx.fillText(text, x, y)
 
 
 class GameView:
@@ -89,6 +97,7 @@ class GameView:
         self._canvas = canvas
         self._setup_canvas()
         self._ctx = canvas.getContext('2d')
+        self._renderer = PyScriptRenderer(canvas.getContext('2d'))
 
         self._img_dict: dict[str, Image] = {}
         if preload_image_files:
@@ -147,8 +156,7 @@ class GameView:
             radius=50,
             fill_style='rgb(0, 0, 200)')
 
-        draw_text(
-            self._ctx,
+        self._renderer.draw_text(
             text='GameTemplate',
             position=(50, 300),
             font='48px bold serif',
@@ -170,8 +178,7 @@ class GameView:
 
     def _show_loading(self) -> None:
         """ロード中表示."""
-        draw_text(
-            self._ctx,
+        self._renderer.draw_text(
             text='Now Loading...',
             position=(120, 200),
             font='48px bold serif',
