@@ -132,12 +132,7 @@ class GameView:
 
         # 先読み画像の読み込み待ち
         if not self._preload_finish:
-            draw_text(
-                self._ctx,
-                text='Now Loading...',
-                position=(120, 200),
-                font='48px bold serif',
-                fill_style='rgb(255, 255, 255)')
+            self._show_loading()
             return
 
         draw_line(
@@ -172,6 +167,15 @@ class GameView:
                 size=Size(32, 32))
 
         self._display_debug()
+
+    def _show_loading(self) -> None:
+        """ロード中表示."""
+        draw_text(
+            self._ctx,
+            text='Now Loading...',
+            position=(120, 200),
+            font='48px bold serif',
+            fill_style='rgb(255, 255, 255)')
 
     def _clear(self) -> None:
         """画面をクリアする."""
