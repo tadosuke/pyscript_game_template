@@ -17,9 +17,16 @@ from values import *
 class PyScriptRenderer:
     """PyScript用の描画クラス."""
 
-    def __init__(self, context: CanvasRenderingContext2D) -> None:
+    #: 背景色
+    BACK_GROUND_COLOR = 'rgb(200, 200, 200)'
+
+    def __init__(
+            self,
+            context: CanvasRenderingContext2D,
+            size: Size) -> None:
         if context is None:
             raise ValueError('context is None')
+        self._size = size
         self._ctx = context
 
     def draw_text(self, text: str, position: tuple[int, int], font: str, fill_style: str) -> None:
@@ -60,6 +67,11 @@ class PyScriptRenderer:
         """画像の描画."""
         self._ctx.drawImage(image, position.x, position.y, size.width, size.height)
 
+    def clear(self):
+        """画面をクリアする."""
+        self._ctx.fillStyle = self.BACK_GROUND_COLOR
+        self._ctx.fillRect(0, 0, self._size.width, self._size.height)
+
 
 class GameView:
     """ゲームのビュー.
@@ -91,7 +103,7 @@ class GameView:
         self._canvas = canvas
         self._setup_canvas()
         self._ctx = canvas.getContext('2d')
-        self._renderer = PyScriptRenderer(canvas.getContext('2d'))
+        self._renderer = PyScriptRenderer(canvas.getContext('2d'), Size(self.WIDTH, self.HEIGHT))
 
         self._img_dict: dict[str, Image] = {}
         if preload_image_files:
@@ -131,7 +143,7 @@ class GameView:
 
     def draw(self) -> None:
         """描画."""
-        self._clear()
+        self._renderer.clear()
 
         # 先読み画像の読み込み待ち
         if not self._preload_finish:
@@ -173,11 +185,6 @@ class GameView:
             position=(120, 200),
             font='48px bold serif',
             fill_style='rgb(255, 255, 255)')
-
-    def _clear(self) -> None:
-        """画面をクリアする."""
-        self._ctx.fillStyle = GameView.BACK_GROUND_COLOR
-        self._ctx.fillRect(0, 0, GameView.WIDTH, GameView.HEIGHT)
 
     def _display_debug(self) -> None:
         """デバッグ情報を画面に描画する."""
