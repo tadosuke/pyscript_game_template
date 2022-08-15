@@ -52,6 +52,11 @@ def draw_rect(ctx: CanvasRenderingContext2D, rect: Rect, fill_style: str) -> Non
     ctx.fillRect(rect.position.x, rect.position.y, rect.size.width, rect.size.height)
 
 
+def draw_image(ctx: CanvasRenderingContext2D, image: Image, position: Position, size: Size) -> None:
+    """画像の描画."""
+    ctx.drawImage(image, position.x, position.y, size.width, size.height)
+
+
 class GameView:
     """ゲームのビュー.
 
@@ -154,6 +159,12 @@ class GameView:
             self._ctx,
             rect=Rect(Position(300, 200), Size(100, 50)),
             fill_style='rgb(0, 200, 0)')
+
+        draw_image(
+            self._ctx,
+            image=self._img_dict['image.png'],
+            position=Position(400, 80),
+            size=Size(32, 32))
 
         self._display_debug()
 
