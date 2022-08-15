@@ -8,6 +8,7 @@ from js import (
 )
 
 from model import GameModel
+from values import *
 
 
 def draw_line(ctx: CanvasRenderingContext2D, start_pos: tuple[int, int], end_pos: tuple[int, int], stroke_style: str) -> None:
@@ -40,6 +41,12 @@ def draw_text(ctx: CanvasRenderingContext2D, text: str, position: tuple[int, int
     ctx.font = font
     ctx.fillStyle = fill_style
     ctx.fillText(text, x, y)
+
+
+def draw_rect(ctx: CanvasRenderingContext2D, rect: Rect, fill_style: str) -> None:
+    """矩形の描画."""
+    ctx.fillStyle = fill_style
+    ctx.fillRect(rect.position.x, rect.position.y, rect.size.width, rect.size.height)
 
 
 class GameView:
@@ -106,6 +113,11 @@ class GameView:
             position=(50, 300),
             font='48px bold serif',
             fill_style='rgb(0, 100, 0)')
+
+        draw_rect(
+            self._ctx,
+            rect=Rect(Position(300, 200), Size(100, 50)),
+            fill_style='rgb(0, 200, 0)')
 
         self._display_debug()
 

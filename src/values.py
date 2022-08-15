@@ -11,3 +11,17 @@ class Position:
 
     def __str__(self):
         return f'({self.x}, {self.y})'
+
+
+@dataclass
+class Size:
+    """サイズ."""
+    width: int
+    height: int
+
+
+@dataclass
+class Rect:
+    """矩形."""
+    position: Position
+    size: Size
