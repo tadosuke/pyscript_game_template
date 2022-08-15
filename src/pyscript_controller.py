@@ -1,14 +1,18 @@
 """ゲームコントローラー(pyscript).
 
-html側の入力イベントをGameModel側の抽象コードに変換する.
+html側の入力イベントを抽象コードに変換してModelに渡す.
 """
 
 from js import (
+    document,
     console,
+    Element,
     MouseEvent,
     KeyboardEvent,
 )
+from pyodide import create_proxy
 
+from pyscript_view import GameView
 from model import GameModel
 from values import Position
 from input import VirtualKey, InputState, OperationParam
@@ -89,14 +93,24 @@ def key_to_vk(key) -> VirtualKey:
 
 
 class GameController:
-    """ゲームのコントローラー."""
+    """ゲームのコントローラー.
 
-    def __init__(self, model: GameModel) -> None:
-        print('[GameController] Create')
+    :param model: モデル
+    :param view: ビュー
+    """
+
+    def __init__(self, model: GameModel, view: GameView) -> None:
+        console.log('[GameController] Create')
 
         if model is None:
             raise ValueError('model is None')
         self._model = model
+
+        if view is None:
+            raise ValueError('view is None')
+        self._view = view
+
+        self._register_input_events(view.canvas)
 
     def mousedown(self, event: MouseEvent) -> None:
         """マウスボタンが押された."""
@@ -134,3 +148,13 @@ class GameController:
         virtual_key = key_to_vk(event.key)
         param = OperationParam(code=virtual_key, state=InputState.Release)
         self._model.operate(param)
+
+    def _register_input_events(self, canvas: Element) -> None:
+        """入力イベントを登録する."""
+        canvas.addEventListener("mousedown", create_proxy(self.mousedown))
+        canvas.addEventListener("mouseup", create_proxy(self.mouseup))
+        canvas.addEventListener("mousemove", create_proxy(self.mousemove))
+
+        # キーイベントはelementでは取れないのでdocumentに登録する必要がある
+        document.addEventListener("keydown", create_proxy(self.keydown))
+        document.addEventListener("keyup", create_proxy(self.keyup))

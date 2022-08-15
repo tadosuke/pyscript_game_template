@@ -5,9 +5,7 @@ from js import (
     document,
     Element,
 )
-from pyodide import create_proxy
 
-from pyscript_controller import GameController
 from model import GameModel
 
 
@@ -16,7 +14,6 @@ class GameView:
 
     :param model: ゲームモデル
     :param canvas: 描画先のCanvas
-    :param controller: コントローラー
     """
 
     #: 背景色
@@ -31,38 +28,28 @@ class GameView:
     def __init__(
             self,
             model: GameModel,
-            canvas: Element,
-            controller: GameController) -> None:
+            canvas: Element) -> None:
         console.log('[GameView] Create')
 
         if model is None:
             raise ValueError('model is None')
         self._model = model
 
-        self._setup_view(canvas)
-        self._register_input_events(canvas, controller)
-
-    def _setup_view(self, canvas: Element) -> None:
-        """ビューの初期化."""
         if canvas is None:
             raise ValueError('canvas is None')
-        canvas.width = GameView.WIDTH
-        canvas.height = GameView.HEIGHT
-
+        self._canvas = canvas
+        self._setup_canvas()
         self._ctx = canvas.getContext('2d')
-        if self._ctx is None:
-            raise ValueError('ctx is None')
 
-    @staticmethod
-    def _register_input_events(canvas: Element, controller: GameController) -> None:
-        """入力イベントを登録する."""
-        canvas.addEventListener("mousedown", create_proxy(controller.mousedown))
-        canvas.addEventListener("mouseup", create_proxy(controller.mouseup))
-        canvas.addEventListener("mousemove", create_proxy(controller.mousemove))
+    @property
+    def canvas(self) -> Element:
+        """Canvas."""
+        return self._canvas
 
-        # キーイベントはelementでは取れないのでdocumentに登録する必要がある
-        document.addEventListener("keydown", create_proxy(controller.keydown))
-        document.addEventListener("keyup", create_proxy(controller.keyup))
+    def _setup_canvas(self) -> None:
+        """ビューの初期化."""
+        self._canvas.width = GameView.WIDTH
+        self._canvas.height = GameView.HEIGHT
 
     def draw(self) -> None:
         """描画."""

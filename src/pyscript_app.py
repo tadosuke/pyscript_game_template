@@ -27,8 +27,8 @@ async def main() -> None:
 
     try:
         model = GameModel()
-        controller = GameController(model)
-        view = GameView(model, canvas, controller)
+        view = GameView(model, canvas)
+        controller = GameController(model, view)
     except ValueError as e:
         console.error(f'Failed to create GameObjects:{e}')
         return
