@@ -25,4 +25,4 @@ class GameModel:
         if param.code == VirtualKey.MouseMove:
             self.mouse_pos = param.position
             return
-        self.keys[param.code] = (param.state == InputState.Press)
+        self.keys[param.code] = param.is_press()

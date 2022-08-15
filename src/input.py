@@ -95,3 +95,15 @@ class OperationParam:
     code: VirtualKey
     state: InputState
     position: Position = Position(0, 0)
+
+    def is_press(self):
+        """押されているか."""
+        return self.state == InputState.Press
+
+    def is_release(self):
+        """離されたか."""
+        return self.state == InputState.Release
+
+    def is_repeat(self):
+        """リピートされたか."""
+        return self.state == InputState.Repeat
