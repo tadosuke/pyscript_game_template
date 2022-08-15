@@ -102,8 +102,9 @@ class GameView:
             raise ValueError('canvas is None')
         self._canvas = canvas
         self._setup_canvas()
-        self._ctx = canvas.getContext('2d')
-        self._renderer = PyScriptRenderer(canvas.getContext('2d'), Size(self.WIDTH, self.HEIGHT))
+        self._renderer = PyScriptRenderer(
+            canvas.getContext('2d'),
+            Size(self.WIDTH, self.HEIGHT))
 
         self._img_dict: dict[str, Image] = {}
         if preload_image_files:
