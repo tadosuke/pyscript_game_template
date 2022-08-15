@@ -14,6 +14,12 @@ from model import GameModel
 from values import *
 
 
+#: 画面幅
+WIDTH = 600
+#: 画面高さ
+HEIGHT = 400
+
+
 class PyScriptRenderer:
     """PyScript用の描画クラス."""
 
@@ -22,17 +28,17 @@ class PyScriptRenderer:
 
     def __init__(
             self,
-            canvas: Element,
-            context: CanvasRenderingContext2D,
-            size: Size) -> None:
+            canvas: Element) -> None:
         if canvas is None:
             raise ValueError('canvas is None')
         self._canvas = canvas
+        self._canvas.width = WIDTH
+        self._canvas.height = HEIGHT
+        self._ctx = canvas.getContext('2d')
 
-        if context is None:
-            raise ValueError('context is None')
-        self._ctx = context
-        self._size = size
+    @property
+    def size(self) -> Size:
+        return Size(self._canvas.width, self._canvas.height)
 
     def draw_text(self, text: str, position: tuple[int, int], font: str, fill_style: str) -> None:
         """テキストの描画."""
@@ -75,7 +81,7 @@ class PyScriptRenderer:
     def clear(self):
         """画面をクリアする."""
         self._ctx.fillStyle = self.BACK_GROUND_COLOR
-        self._ctx.fillRect(0, 0, self._size.width, self._size.height)
+        self._ctx.fillRect(0, 0, self.size.width, self.size.height)
 
 
 class GameView:
@@ -87,10 +93,6 @@ class GameView:
 
     #: 背景色
     BACK_GROUND_COLOR = 'rgb(200, 200, 200)'
-    #: 画面幅
-    WIDTH = 600
-    #: 画面高さ
-    HEIGHT = 400
 
     def __init__(
             self,
@@ -106,11 +108,7 @@ class GameView:
         if canvas is None:
             raise ValueError('canvas is None')
         self._canvas = canvas
-        self._setup_canvas()
-        self._renderer = PyScriptRenderer(
-            self._canvas,
-            canvas.getContext('2d'),
-            Size(self.WIDTH, self.HEIGHT))
+        self._renderer = PyScriptRenderer(self._canvas)
 
         self._img_dict: dict[str, Image] = {}
         if preload_image_files:
@@ -142,11 +140,6 @@ class GameView:
         for image in self._img_dict.values():
             if image is None:
                 self._preload_finish = False
-
-    def _setup_canvas(self) -> None:
-        """ビューの初期化."""
-        self._canvas.width = GameView.WIDTH
-        self._canvas.height = GameView.HEIGHT
 
     def draw(self) -> None:
         """描画."""
