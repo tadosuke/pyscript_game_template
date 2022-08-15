@@ -113,7 +113,8 @@ class GameView:
     """ゲームのビュー.
 
     :param model: ゲームモデル
-    :param canvas: 描画先のCanvas
+    :param renderer: 描画クラス
+    :param preload_image_files: 先読みする画像ファイルたち
     """
 
     #: 背景色
