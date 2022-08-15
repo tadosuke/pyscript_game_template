@@ -15,6 +15,11 @@ from pyscript_view import GameView
 #: ゲームのFPS
 _FPS = 1.0 / 30
 
+#: プリロードする画像ファイル名
+_PRELOAD_IMAGE_FILES: list[str] = [
+    'image.png',
+]
+
 
 async def main() -> None:
     """メイン関数."""
@@ -25,7 +30,7 @@ async def main() -> None:
 
     try:
         model = GameModel()
-        view = GameView(model, canvas)
+        view = GameView(model, canvas, _PRELOAD_IMAGE_FILES)
         controller = GameController(model, view)
     except ValueError as e:
         console.error(f'Failed to create GameObjects:{e}')

@@ -76,7 +76,8 @@ class GameView:
     def __init__(
             self,
             model: GameModel,
-            canvas: Element) -> None:
+            canvas: Element,
+            preload_image_files: tp.Optional[list[str]] = None) -> None:
         console.log('[GameView] Create')
 
         if model is None:
@@ -90,8 +91,11 @@ class GameView:
         self._ctx = canvas.getContext('2d')
 
         self._img_dict: dict[str, Image] = {}
-        self._preload_finish = False
-        self._preload_images(['image.png'])
+        if preload_image_files:
+            self._preload_finish = False
+            self._preload_images(preload_image_files)
+        else:
+            self._preload_finish = True
 
     @property
     def canvas(self) -> Element:
@@ -160,11 +164,12 @@ class GameView:
             rect=Rect(Position(300, 200), Size(100, 50)),
             fill_style='rgb(0, 200, 0)')
 
-        draw_image(
-            self._ctx,
-            image=self._img_dict['image.png'],
-            position=Position(400, 80),
-            size=Size(32, 32))
+        if self._img_dict:
+            draw_image(
+                self._ctx,
+                image=self._img_dict['image.png'],  # プリロードに指定した画像
+                position=Position(400, 80),
+                size=Size(32, 32))
 
         self._display_debug()
 
