@@ -5,9 +5,7 @@ import asyncio
 from js import (
     console,
     document,
-    Element,
 )
-from pyodide import create_proxy
 
 from pyscript_controller import GameController
 from model import GameModel
@@ -22,7 +20,7 @@ async def main() -> None:
     """メイン関数."""
     canvas = document.querySelector('#output')
     if canvas is None:
-        console.error('context is None')
+        console.error('canvas is None')
         return
 
     try:
