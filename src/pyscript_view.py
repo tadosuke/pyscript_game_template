@@ -1,12 +1,15 @@
 """ゲームビュー(pyscript)."""
 import math
+import os.path
 
 from js import (
     console,
     Element,
     CanvasRenderingContext2D,
+    Image,
 )
 
+import typing as tp
 from model import GameModel
 from values import *
 
@@ -81,10 +84,33 @@ class GameView:
         self._setup_canvas()
         self._ctx = canvas.getContext('2d')
 
+        self._img_dict: dict[str, Image] = {}
+        self._preload_finish = False
+        self._preload_images(['image.png'])
+
     @property
     def canvas(self) -> Element:
         """Canvas."""
         return self._canvas
+
+    def _preload_images(self, file_names: tp.Collection[str]) -> None:
+        """画像ファイルの先読み."""
+        for file in file_names:
+            console.log(f'Preload image({file})')
+            self._img_dict[os.path.basename(file)] = None
+            image = Image.new()  # pythonではnew Image()とできないので、特殊な書き方になる
+            image.src = file
+            image.onload = lambda e: self._onload_image(image)
+
+    def _onload_image(self, image):
+        """画像の読み込み完了時に呼ばれる."""
+        console.log(f'onload image({image.src})')
+        self._img_dict[os.path.basename(image.src)] = image
+
+        self._preload_finish = True
+        for image in self._img_dict.values():
+            if image is None:
+                self._preload_finish = False
 
     def _setup_canvas(self) -> None:
         """ビューの初期化."""
@@ -94,6 +120,16 @@ class GameView:
     def draw(self) -> None:
         """描画."""
         self._clear()
+
+        # 先読み画像の読み込み待ち
+        if not self._preload_finish:
+            draw_text(
+                self._ctx,
+                text='Now Loading...',
+                position=(120, 200),
+                font='48px bold serif',
+                fill_style='rgb(255, 255, 255)')
+            return
 
         draw_line(
             self._ctx,
