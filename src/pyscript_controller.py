@@ -96,21 +96,19 @@ class GameController:
     """ゲームのコントローラー.
 
     :param model: モデル
-    :param view: ビュー
+    :param canvas: 入力イベントを登録するためのCanvas
     """
 
-    def __init__(self, model: GameModel, view: GameView) -> None:
+    def __init__(self, model: GameModel, canvas: Element) -> None:
         console.log('[GameController] Create')
 
         if model is None:
             raise ValueError('model is None')
         self._model = model
 
-        if view is None:
-            raise ValueError('view is None')
-        self._view = view
-
-        self._register_input_events(view.canvas)
+        if canvas is None:
+            raise ValueError('canvas is None')
+        self._register_input_events(canvas)
 
     def mousedown(self, event: MouseEvent) -> None:
         """マウスボタンが押された."""

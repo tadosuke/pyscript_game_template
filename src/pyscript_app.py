@@ -9,7 +9,7 @@ from js import (
 
 from pyscript_controller import GameController
 from model import GameModel
-from pyscript_view import GameView
+from pyscript_view import GameView, PyScriptRenderer
 
 
 #: ゲームのFPS
@@ -30,8 +30,9 @@ async def main() -> None:
 
     try:
         model = GameModel()
-        view = GameView(model, canvas, _PRELOAD_IMAGE_FILES)
-        controller = GameController(model, view)
+        renderer = PyScriptRenderer(canvas)
+        view = GameView(model, renderer, _PRELOAD_IMAGE_FILES)
+        controller = GameController(model, canvas)
     except ValueError as e:
         console.error(f'Failed to create GameObjects:{e}')
         return

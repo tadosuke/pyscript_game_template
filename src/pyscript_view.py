@@ -20,7 +20,12 @@ WIDTH = 600
 HEIGHT = 400
 
 
-class PyScriptRenderer:
+class AbstractRenderer:
+    """描画の抽象クラス."""
+    pass
+
+
+class PyScriptRenderer(AbstractRenderer):
     """PyScript用の描画クラス."""
 
     #: 背景色
@@ -97,7 +102,7 @@ class GameView:
     def __init__(
             self,
             model: GameModel,
-            canvas: Element,
+            renderer: AbstractRenderer,
             preload_image_files: tp.Optional[list[str]] = None) -> None:
         console.log('[GameView] Create')
 
@@ -105,10 +110,9 @@ class GameView:
             raise ValueError('model is None')
         self._model = model
 
-        if canvas is None:
-            raise ValueError('canvas is None')
-        self._canvas = canvas
-        self._renderer = PyScriptRenderer(self._canvas)
+        if renderer is None:
+            raise ValueError('renderer is None')
+        self._renderer = renderer
 
         self._img_dict: dict[str, Image] = {}
         if preload_image_files:
@@ -116,11 +120,6 @@ class GameView:
             self._preload_images(preload_image_files)
         else:
             self._preload_finish = True
-
-    @property
-    def canvas(self) -> Element:
-        """Canvas."""
-        return self._canvas
 
     def _preload_images(self, file_names: tp.Collection[str]) -> None:
         """画像ファイルの先読み."""
