@@ -37,12 +37,6 @@ def draw_circle(ctx: CanvasRenderingContext2D, center: tuple[int, int], radius: 
     ctx.closePath()
 
 
-def draw_rect(ctx: CanvasRenderingContext2D, rect: Rect, fill_style: str) -> None:
-    """矩形の描画."""
-    ctx.fillStyle = fill_style
-    ctx.fillRect(rect.position.x, rect.position.y, rect.size.width, rect.size.height)
-
-
 def draw_image(ctx: CanvasRenderingContext2D, image: Image, position: Position, size: Size) -> None:
     """画像の描画."""
     ctx.drawImage(image, position.x, position.y, size.width, size.height)
@@ -63,6 +57,11 @@ class PyScriptRenderer:
         self._ctx.font = font
         self._ctx.fillStyle = fill_style
         self._ctx.fillText(text, x, y)
+
+    def draw_rect(self, rect: Rect, fill_style: str) -> None:
+        """矩形の描画."""
+        self._ctx.fillStyle = fill_style
+        self._ctx.fillRect(rect.position.x, rect.position.y, rect.size.width, rect.size.height)
 
 
 class GameView:
@@ -162,8 +161,7 @@ class GameView:
             font='48px bold serif',
             fill_style='rgb(0, 100, 0)')
 
-        draw_rect(
-            self._ctx,
+        self._renderer.draw_rect(
             rect=Rect(Position(300, 200), Size(100, 50)),
             fill_style='rgb(0, 200, 0)')
 
