@@ -14,11 +14,6 @@ from model import GameModel
 from values import *
 
 
-def draw_image(ctx: CanvasRenderingContext2D, image: Image, position: Position, size: Size) -> None:
-    """画像の描画."""
-    ctx.drawImage(image, position.x, position.y, size.width, size.height)
-
-
 class PyScriptRenderer:
     """PyScript用の描画クラス."""
 
@@ -60,6 +55,10 @@ class PyScriptRenderer:
         self._ctx.arc(x, y, radius, angle_start, angle_end)
         self._ctx.fill()
         self._ctx.closePath()
+
+    def draw_image(self, image: Image, position: Position, size: Size) -> None:
+        """画像の描画."""
+        self._ctx.drawImage(image, position.x, position.y, size.width, size.height)
 
 
 class GameView:
@@ -162,8 +161,7 @@ class GameView:
             fill_style='rgb(0, 200, 0)')
 
         if self._img_dict:
-            draw_image(
-                self._ctx,
+            self._renderer.draw_image(
                 image=self._img_dict['image.png'],  # プリロードに指定した画像
                 position=Position(400, 80),
                 size=Size(32, 32))
