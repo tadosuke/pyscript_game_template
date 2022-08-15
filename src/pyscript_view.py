@@ -14,16 +14,6 @@ from model import GameModel
 from values import *
 
 
-def draw_line(ctx: CanvasRenderingContext2D, start_pos: tuple[int, int], end_pos: tuple[int, int], stroke_style: str) -> None:
-    """線の描画."""
-    ctx.beginPath()
-    ctx.strokeStyle = stroke_style
-    ctx.moveTo(*start_pos)
-    ctx.lineTo(*end_pos)
-    ctx.stroke()
-    ctx.closePath()
-
-
 def draw_circle(ctx: CanvasRenderingContext2D, center: tuple[int, int], radius: int, fill_style: str) -> None:
     """円の描画."""
     angle_start = 0 * math.pi / 180
@@ -62,6 +52,15 @@ class PyScriptRenderer:
         """矩形の描画."""
         self._ctx.fillStyle = fill_style
         self._ctx.fillRect(rect.position.x, rect.position.y, rect.size.width, rect.size.height)
+
+    def draw_line(self, start_pos: tuple[int, int], end_pos: tuple[int, int], stroke_style: str) -> None:
+        """線の描画."""
+        self._ctx.beginPath()
+        self._ctx.strokeStyle = stroke_style
+        self._ctx.moveTo(*start_pos)
+        self._ctx.lineTo(*end_pos)
+        self._ctx.stroke()
+        self._ctx.closePath()
 
 
 class GameView:
@@ -143,8 +142,7 @@ class GameView:
             self._show_loading()
             return
 
-        draw_line(
-            self._ctx,
+        self._renderer.draw_line(
             start_pos=(100, 100),
             end_pos=(200, 120),
             stroke_style='rgb(200, 0, 0)')
