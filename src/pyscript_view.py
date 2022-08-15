@@ -70,8 +70,6 @@ class GameView:
 
     #: 背景色
     BACK_GROUND_COLOR = 'rgb(200, 200, 200)'
-    #: フォントの標準色
-    FONT_COLOR = 'rgb(0, 0, 0)'
     #: 画面幅
     WIDTH = 600
     #: 画面高さ
@@ -183,17 +181,7 @@ class GameView:
 
     def _display_debug(self) -> None:
         """デバッグ情報を画面に描画する."""
-        self._ctx.font = "10px sans-serif"
-        self._ctx.fillStyle = GameView.FONT_COLOR
-
-        y = 10
-        line_h = 10
-
-        # 経過時間
-        self._ctx.fillText(f'Time={self._model.time:.1f}', 0, y)
-        y += line_h
-
-        # マウス座標
-        self._ctx.fillText(f'MousePos={self._model.mouse_pos}', 0, y)
-        y += line_h
-
+        font = "10px sans-serif"
+        fill_style = 'rgb(0, 0, 0)'
+        self._renderer.draw_text(f'Time={self._model.time:.1f}', (0, 10), font, fill_style)
+        self._renderer.draw_text(f'MousePos={self._model.mouse_pos}', (0, 20), font, fill_style)
