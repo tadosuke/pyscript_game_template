@@ -103,7 +103,7 @@ class PyScriptImageLoader:
         console.log(f'Onload image({image.src})')
         self._img_dict[os.path.basename(image.src)] = image
 
-    def is_loading(self):
+    def is_loading(self) -> bool:
         """読み込み中か."""
         if None in self._img_dict.values():
             return True
@@ -121,9 +121,6 @@ class GameView:
     :param renderer: 描画クラス
     :param preload_image_files: 先読みする画像ファイルたち
     """
-
-    #: 背景色
-    BACK_GROUND_COLOR = 'rgb(200, 200, 200)'
 
     def __init__(
             self,
