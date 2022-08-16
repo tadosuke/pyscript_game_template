@@ -12,7 +12,7 @@ from js import (
 import typing as tp
 from model import GameModel
 from values import *
-from view import AbstractRenderer
+from view import AbstractRenderer, AbstractImageLoader
 
 
 class PyScriptRenderer(AbstractRenderer):
@@ -82,14 +82,14 @@ class PyScriptRenderer(AbstractRenderer):
         return f'rgb({color.r},{color.g},{color.b})'
 
 
-class PyScriptImageLoader:
+class PyScriptImageLoader(AbstractImageLoader):
     """PyScript用の画像読み込みクラス."""
 
     def __init__(self, file_names: tp.Collection[str]):
         self._file_names = file_names
         self._img_dict: dict[str, Image] = {}
 
-    def load(self):
+    def load(self) -> None:
         """読み込む."""
         for file_name in self._file_names:
             console.log(f'Load image({file_name})')

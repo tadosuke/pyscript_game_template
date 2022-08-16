@@ -3,6 +3,21 @@
 from values import *
 
 
+class AbstractImageLoader:
+    """画像読み込みの抽象クラス."""
+
+    def load(self) -> None:
+        pass
+
+    def is_loading(self) -> bool:
+        """読み込み中か."""
+        pass
+
+    def get_image(self, file_name: str):
+        """画像データを得る."""
+        pass
+
+
 class AbstractRenderer:
     """描画の抽象クラス."""
 
