@@ -1,4 +1,4 @@
-# pyscript_game_template
+# PyScript用ゲームテンプレート
 PyScriptでゲームを作るためのひな形です。
 
 一式を同じフォルダ以下に置いて、index.htmlを開くと実行できます。
