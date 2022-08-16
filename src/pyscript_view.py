@@ -82,6 +82,38 @@ class PyScriptRenderer(AbstractRenderer):
         return f'rgb({color.r},{color.g},{color.b})'
 
 
+class PyScriptImageLoader:
+    """PyScript用の画像読み込みクラス."""
+
+    def __init__(self, file_names: tp.Collection[str]):
+        self._file_names = file_names
+        self._img_dict: dict[str, Image] = {}
+
+    def load(self):
+        """読み込む."""
+        for file_name in self._file_names:
+            console.log(f'Load image({file_name})')
+            self._img_dict[file_name] = None
+            image = Image.new()  # pythonではnew Image()とできないので、特殊な書き方になる
+            image.src = file_name
+            image.onload = lambda e: self._onload_image(image)
+
+    def _onload_image(self, image: Image):
+        """読み込み完了時に呼ばれる."""
+        console.log(f'Onload image({image.src})')
+        self._img_dict[os.path.basename(image.src)] = image
+
+    def is_loading(self):
+        """読み込み中か."""
+        if None in self._img_dict.values():
+            return True
+        return False
+
+    def get_image(self, file_name: str):
+        """画像データを得る."""
+        return self._img_dict.get(file_name)
+
+
 class GameView:
     """ゲームのビュー.
 
@@ -108,38 +140,15 @@ class GameView:
             raise ValueError('renderer is None')
         self._renderer = renderer
 
-        self._img_dict: dict[str, Image] = {}
-        if preload_image_files:
-            self._preload_finish = False
-            self._preload_images(preload_image_files)
-        else:
-            self._preload_finish = True
-
-    def _preload_images(self, file_names: tp.Collection[str]) -> None:
-        """画像ファイルの先読み."""
-        for file in file_names:
-            console.log(f'Preload image({file})')
-            self._img_dict[os.path.basename(file)] = None
-            image = Image.new()  # pythonではnew Image()とできないので、特殊な書き方になる
-            image.src = file
-            image.onload = lambda e: self._onload_image(image)
-
-    def _onload_image(self, image):
-        """画像の読み込み完了時に呼ばれる."""
-        console.log(f'onload image({image.src})')
-        self._img_dict[os.path.basename(image.src)] = image
-
-        self._preload_finish = True
-        for image in self._img_dict.values():
-            if image is None:
-                self._preload_finish = False
+        self._image_loader = PyScriptImageLoader(preload_image_files)
+        self._image_loader.load()
 
     def draw(self) -> None:
         """描画."""
         self._renderer.clear()
 
         # 先読み画像の読み込み待ち
-        if not self._preload_finish:
+        if self._image_loader.is_loading():
             self._show_loading()
             return
 
@@ -163,9 +172,10 @@ class GameView:
             rect=Rect(Position(300, 200), Size(100, 50)),
             color=Color(0, 200, 0))
 
-        if self._img_dict:
+        image = self._image_loader.get_image('image.png')
+        if image is not None:
             self._renderer.draw_image(
-                image=self._img_dict['image.png'],  # プリロードに指定した画像
+                image=image,
                 position=Position(400, 80),
                 size=Size(32, 32))
 
