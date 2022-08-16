@@ -15,13 +15,16 @@ from values import *
 from view import AbstractRenderer, AbstractImageLoader, Font
 
 
-@dataclass
 class PyScriptFont(Font):
 
+    def __init__(self, size: int, name: str, bold: bool = False):
+        super().__init__(size, name, bold)
+
     def __str__(self):
-        result = f'{self.size}px {self.type}'
+        result = f'{self.size}px '
         if self.bold:
-            result += ' bold'
+            result += 'bold '
+        result += self.name
         return result
 
 
@@ -49,7 +52,7 @@ class PyScriptRenderer(AbstractRenderer):
         self._ctx.fillStyle = self.BACK_GROUND_COLOR
         self._ctx.fillRect(0, 0, self.size.width, self.size.height)
 
-    def draw_text(self, text: str, position: tuple[int, int], font: Font, color: Color) -> None:
+    def draw_text(self, text: str, position: tuple[int, int], font: PyScriptFont, color: Color) -> None:
         """テキストの描画."""
         (x, y) = position
         text = text
@@ -175,7 +178,7 @@ class GameView:
         self._renderer.draw_text(
             text='GameTemplate',
             position=(50, 300),
-            font='48px bold serif',
+            font=PyScriptFont(size=48, name='serif', bold=True),
             color=Color(0, 100, 0))
 
         self._renderer.draw_rect(
@@ -196,13 +199,13 @@ class GameView:
         self._renderer.draw_text(
             text='Now Loading...',
             position=(120, 200),
-            font='48px bold serif',
+            font=PyScriptFont(size=48, name='sans-serif', bold=True),
             color=Color(255, 255, 255))
 
     def _display_debug(self) -> None:
         """デバッグ情報を画面に描画する."""
 
-        font = PyScriptFont(10, 'sans-serif')
+        font = PyScriptFont(size=10, name='sans-serif')
         color = Color(0, 0, 0)
         self._renderer.draw_text(f'Time={self._model.time:.1f}', (0, 10), font, color)
         self._renderer.draw_text(f'MousePos={self._model.mouse_pos}', (0, 20), font, color)
