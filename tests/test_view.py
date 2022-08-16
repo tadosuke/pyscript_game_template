@@ -3,6 +3,14 @@ import unittest
 from view import *
 
 
+class MockRenderer(AbstractRenderer):
+    pass
+
+
+class MockImageLoader(AbstractImageLoader):
+    pass
+
+
 class TestView(unittest.TestCase):
 
     def test_font(self):
@@ -15,6 +23,18 @@ class TestView(unittest.TestCase):
             font = Font(size=0, name='sans-serif')
         with self.assertRaises(ValueError):
             font = Font(size=10, name='')
+
+    def test_game_view(self):
+        result = True
+        try:
+            model = GameModel()
+            renderer = MockRenderer()
+            loader = MockImageLoader([])
+            view = GameView(model, renderer, loader)
+        except Exception:
+            result = False
+        finally:
+            self.assertTrue(result)
 
 
 if __name__ == '__main__':
