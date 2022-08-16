@@ -39,17 +39,17 @@ class PyScriptRenderer(AbstractRenderer):
         self._ctx.fillStyle = self.BACK_GROUND_COLOR
         self._ctx.fillRect(0, 0, self.size.width, self.size.height)
 
-    def draw_text(self, text: str, position: tuple[int, int], font: str, fill_style: str) -> None:
+    def draw_text(self, text: str, position: tuple[int, int], font: str, color: Color) -> None:
         """テキストの描画."""
         (x, y) = position
         text = text
         self._ctx.font = font
-        self._ctx.fillStyle = fill_style
+        self._ctx.fillStyle = self._color_to_fillstyle(color)
         self._ctx.fillText(text, x, y)
 
     def draw_rect(self, rect: Rect, color: Color) -> None:
         """矩形の描画."""
-        self._ctx.fillStyle = f'rbg({color.r},{color.g},{color.b})'
+        self._ctx.fillStyle = self._color_to_fillstyle(color)
         self._ctx.fillRect(rect.position.x, rect.position.y, rect.size.width, rect.size.height)
 
     def draw_line(self, start_pos: tuple[int, int], end_pos: tuple[int, int], stroke_style: str) -> None:
@@ -76,6 +76,10 @@ class PyScriptRenderer(AbstractRenderer):
     def draw_image(self, image: Image, position: Position, size: Size) -> None:
         """画像の描画."""
         self._ctx.drawImage(image, position.x, position.y, size.width, size.height)
+
+    @staticmethod
+    def _color_to_fillstyle(color: Color) -> str:
+        return f'rgb({color.r},{color.g},{color.b})'
 
 
 class GameView:
@@ -153,7 +157,7 @@ class GameView:
             text='GameTemplate',
             position=(50, 300),
             font='48px bold serif',
-            fill_style='rgb(0, 100, 0)')
+            color=Color(0, 100, 0))
 
         self._renderer.draw_rect(
             rect=Rect(Position(300, 200), Size(100, 50)),
@@ -173,11 +177,11 @@ class GameView:
             text='Now Loading...',
             position=(120, 200),
             font='48px bold serif',
-            fill_style='rgb(255, 255, 255)')
+            color=Color(255, 255, 255))
 
     def _display_debug(self) -> None:
         """デバッグ情報を画面に描画する."""
         font = "10px sans-serif"
-        fill_style = 'rgb(0, 0, 0)'
-        self._renderer.draw_text(f'Time={self._model.time:.1f}', (0, 10), font, fill_style)
-        self._renderer.draw_text(f'MousePos={self._model.mouse_pos}', (0, 20), font, fill_style)
+        color = Color(0, 0, 0)
+        self._renderer.draw_text(f'Time={self._model.time:.1f}', (0, 10), font, color)
+        self._renderer.draw_text(f'MousePos={self._model.mouse_pos}', (0, 20), font, color)

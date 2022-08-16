@@ -17,7 +17,7 @@ class AbstractRenderer:
         """画面をクリアする."""
         pass
 
-    def draw_rect(self, rect: Rect, fill_style: str) -> None:
+    def draw_rect(self, rect: Rect, color: Color) -> None:
         """矩形の描画."""
         pass
 
