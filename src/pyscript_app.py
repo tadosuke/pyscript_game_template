@@ -11,6 +11,7 @@ from js import (
 from pyscript_controller import GameController
 from model import GameModel
 from pyscript_view import PyScriptRenderer, PyScriptImageLoader
+from pyscript_repository import PyScriptRepository
 from view import GameView
 
 #: ゲームのFPS
@@ -31,7 +32,8 @@ async def main() -> None:
     canvas = _setup_canvas()
 
     try:
-        model = GameModel()
+        repository = PyScriptRepository()
+        model = GameModel(repository)
         renderer = PyScriptRenderer(canvas)
         loader = PyScriptImageLoader(_PRELOAD_IMAGE_FILES)
         view = GameView(model, renderer, loader)
