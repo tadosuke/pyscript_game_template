@@ -16,6 +16,7 @@ from view import AbstractRenderer, AbstractImageLoader, Font
 
 
 class PyScriptFont(Font):
+    """PyScript用フォント設定."""
 
     def __init__(self, size: int, name: str, bold: bool = False):
         super().__init__(size, name, bold)
