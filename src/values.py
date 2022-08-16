@@ -26,6 +26,34 @@ class Rect:
     position: Position
     size: Size
 
+    @property
+    def left(self) -> float:
+        return self.position.x
+
+    @property
+    def right(self) -> float:
+        return self.position.x + self.size.width
+
+    @property
+    def top(self) -> float:
+        return self.position.y
+
+    @property
+    def bottom(self) -> float:
+        return self.position.y + self.size.height
+
+    @property
+    def center(self) -> Position:
+        x = self.position.x + self.size.width/2
+        y = self.position.y + self.size.height/2
+        return Position(x, y)
+
+    def contains_point(self, point: Position) -> bool:
+        """指定した点を含むか."""
+        is_x = self.left <= point.x <= self.right
+        is_y = self.top <= point.y <= self.bottom
+        return is_x and is_y
+
 
 class Color:
     """色."""
