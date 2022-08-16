@@ -47,9 +47,9 @@ class PyScriptRenderer(AbstractRenderer):
         self._ctx.fillStyle = fill_style
         self._ctx.fillText(text, x, y)
 
-    def draw_rect(self, rect: Rect, fill_style: str) -> None:
+    def draw_rect(self, rect: Rect, color: Color) -> None:
         """矩形の描画."""
-        self._ctx.fillStyle = fill_style
+        self._ctx.fillStyle = f'rbg({color.r},{color.g},{color.b})'
         self._ctx.fillRect(rect.position.x, rect.position.y, rect.size.width, rect.size.height)
 
     def draw_line(self, start_pos: tuple[int, int], end_pos: tuple[int, int], stroke_style: str) -> None:
@@ -157,7 +157,7 @@ class GameView:
 
         self._renderer.draw_rect(
             rect=Rect(Position(300, 200), Size(100, 50)),
-            fill_style='rgb(0, 200, 0)')
+            color=Color(0, 200, 0))
 
         if self._img_dict:
             self._renderer.draw_image(

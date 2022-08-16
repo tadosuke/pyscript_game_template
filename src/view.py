@@ -33,6 +33,6 @@ class AbstractRenderer:
         """画像の描画."""
         pass
 
-    def draw_text(self, text: str, position: tuple[int, int], font: str, fill_style: str) -> None:
+    def draw_text(self, text: str, position: tuple[int, int], font: str, color: Color) -> None:
         """テキストの描画."""
         pass
