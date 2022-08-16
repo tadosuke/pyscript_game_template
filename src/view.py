@@ -131,7 +131,7 @@ class GameView:
         if image is not None:
             self._renderer.draw_image(
                 image=image,
-                position=Position(400, 80),
+                position=self._model.mouse_pos,
                 size=Size(32, 32))
 
         self._display_debug()
