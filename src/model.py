@@ -9,7 +9,7 @@ class GameModel:
 
     def __init__(self) -> None:
         print('[GameModel] Create')
-        self.time = 0
+        self.time: float = 0
         self.mouse_pos: Position = Position(0, 0)
         self.keys: dict[VirtualKey, bool] = {}
 
