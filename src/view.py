@@ -25,7 +25,7 @@ class AbstractRenderer:
         """線の描画."""
         pass
 
-    def draw_circle(self, center: tuple[int, int], radius: int, fill_style: str) -> None:
+    def draw_circle(self, center: tuple[int, int], radius: int, color: Color) -> None:
         """円の描画."""
         pass
 

@@ -61,14 +61,14 @@ class PyScriptRenderer(AbstractRenderer):
         self._ctx.stroke()
         self._ctx.closePath()
 
-    def draw_circle(self, center: tuple[int, int], radius: int, fill_style: str) -> None:
+    def draw_circle(self, center: tuple[int, int], radius: int, color: Color) -> None:
         """円の描画."""
         angle_start = 0 * math.pi / 180
         angle_end = 360 * math.pi / 180
 
         (x, y) = center
         self._ctx.beginPath()
-        self._ctx.fillStyle = fill_style
+        self._ctx.fillStyle = self._color_to_style(color)
         self._ctx.arc(x, y, radius, angle_start, angle_end)
         self._ctx.fill()
         self._ctx.closePath()
@@ -151,7 +151,7 @@ class GameView:
         self._renderer.draw_circle(
             center=(200, 200),
             radius=50,
-            fill_style='rgb(0, 0, 200)')
+            color=Color(0, 0, 200))
 
         self._renderer.draw_text(
             text='GameTemplate',
