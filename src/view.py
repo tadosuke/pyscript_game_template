@@ -6,9 +6,6 @@ from values import *
 class AbstractRenderer:
     """描画の抽象クラス."""
 
-    def __init__(self):
-        pass
-
     @property
     def size(self) -> Size:
         pass
