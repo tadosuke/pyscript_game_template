@@ -38,6 +38,11 @@ class TestValues(unittest.TestCase):
 
         rect2 = Rect(Position(20, 30), Size(40, 50))
         self.assertNotEqual(rect1, rect2)
+        self.assertTrue(rect2.intersects_with_rect(rect1))
+
+        rect3 = Rect(Position(11, 21), Size(5, 6))
+        self.assertTrue(rect3.intersects_with_rect(rect1))
+        self.assertFalse(rect3.intersects_with_rect(rect2))
 
 
 if __name__ == '__main__':

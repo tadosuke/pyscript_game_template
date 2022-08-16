@@ -1,5 +1,6 @@
 """値オブジェクトたち."""
 
+from __future__ import annotations
 from dataclasses import dataclass
 
 
@@ -52,6 +53,12 @@ class Rect:
         """指定した点を含むか."""
         is_x = self.left <= point.x <= self.right
         is_y = self.top <= point.y <= self.bottom
+        return is_x and is_y
+
+    def intersects_with_rect(self, other: Rect) -> bool:
+        """指定した矩形と交差するか."""
+        is_x = other.left <= self.right and self.left <= other.right
+        is_y = other.top <= self.bottom and self.top <= other.bottom
         return is_x and is_y
 
 
