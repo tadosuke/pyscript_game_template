@@ -1,10 +1,15 @@
 """ゲームビュー."""
 
+import typing as tp
+
 from values import *
 
 
 class AbstractImageLoader:
     """画像読み込みの抽象クラス."""
+
+    def __init__(self, file_names: tp.Collection[str]):
+        pass
 
     def load(self) -> None:
         pass

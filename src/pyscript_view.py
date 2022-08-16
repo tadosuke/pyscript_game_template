@@ -86,6 +86,7 @@ class PyScriptImageLoader(AbstractImageLoader):
     """PyScript用の画像読み込みクラス."""
 
     def __init__(self, file_names: tp.Collection[str]):
+        super().__init__(file_names)
         self._file_names = file_names
         self._img_dict: dict[str, Image] = {}
 
@@ -119,14 +120,14 @@ class GameView:
 
     :param model: ゲームモデル
     :param renderer: 描画クラス
-    :param preload_image_files: 先読みする画像ファイルたち
+    :param image_loader: 画像読み込みクラス
     """
 
     def __init__(
             self,
             model: GameModel,
             renderer: AbstractRenderer,
-            preload_image_files: tp.Optional[list[str]] = None) -> None:
+            image_loader: AbstractImageLoader) -> None:
         console.log('[GameView] Create')
 
         if model is None:
@@ -137,7 +138,9 @@ class GameView:
             raise ValueError('renderer is None')
         self._renderer = renderer
 
-        self._image_loader = PyScriptImageLoader(preload_image_files)
+        if image_loader is None:
+            raise ValueError('image_loader is None')
+        self._image_loader = image_loader
         self._image_loader.load()
 
     def draw(self) -> None:
