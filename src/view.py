@@ -18,7 +18,7 @@ class AbstractImageLoader:
         """読み込み中か."""
         pass
 
-    def get_image(self, file_name: str):
+    def get_image(self, file_name: str) -> object:
         """画像データを得る."""
         pass
 

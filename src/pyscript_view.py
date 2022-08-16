@@ -110,9 +110,9 @@ class PyScriptImageLoader(AbstractImageLoader):
             return True
         return False
 
-    def get_image(self, file_name: str):
+    def get_image(self, file_name: str) -> Image:
         """画像データを得る."""
-        return self._img_dict.get(file_name)
+        return self._img_dict[file_name]
 
 
 class GameView:
