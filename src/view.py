@@ -21,7 +21,7 @@ class AbstractRenderer:
         """矩形の描画."""
         pass
 
-    def draw_line(self, start_pos: tuple[int, int], end_pos: tuple[int, int], stroke_style: str) -> None:
+    def draw_line(self, start_pos: tuple[int, int], end_pos: tuple[int, int], color: Color) -> None:
         """線の描画."""
         pass
 
