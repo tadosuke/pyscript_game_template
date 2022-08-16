@@ -12,7 +12,6 @@ from js import (
 )
 from pyodide import create_proxy
 
-from pyscript_view import GameView
 from model import GameModel
 from values import Position
 from input import VirtualKey, InputState, OperationParam

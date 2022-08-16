@@ -10,8 +10,8 @@ from js import (
 
 from pyscript_controller import GameController
 from model import GameModel
-from pyscript_view import GameView, PyScriptRenderer, PyScriptImageLoader
-
+from pyscript_view import PyScriptRenderer, PyScriptImageLoader
+from view import GameView
 
 #: ゲームのFPS
 _FPS = 1.0 / 30
