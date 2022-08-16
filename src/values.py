@@ -30,7 +30,7 @@ class Rect:
 class Color:
     """色."""
 
-    def __init__(self, r: int, g: int, b: int, a: int):
+    def __init__(self, r: int, g: int, b: int, a: int = 255):
         if r < 0 or 255 < r:
             raise ValueError()
         if g < 0 or 255 < g:

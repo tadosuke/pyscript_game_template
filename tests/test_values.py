@@ -14,6 +14,9 @@ class TestValues(unittest.TestCase):
         self.assertEqual(color.b, 30)
         self.assertEqual(color.a, 40)
 
+        color = Color(10, 20, 30)
+        self.assertEqual(color.a, 255)
+
         with self.assertRaises(ValueError):
             color = Color(-1, -1, -1, -1)
             color = Color(256, 256, 256, 256)
