@@ -60,3 +60,4 @@ class Color:
     @property
     def a(self) -> int:
         return self._a
+

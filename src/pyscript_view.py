@@ -12,7 +12,17 @@ from js import (
 import typing as tp
 from model import GameModel
 from values import *
-from view import AbstractRenderer, AbstractImageLoader
+from view import AbstractRenderer, AbstractImageLoader, Font
+
+
+@dataclass
+class PyScriptFont(Font):
+
+    def __str__(self):
+        result = f'{self.size}px {self.type}'
+        if self.bold:
+            result += ' bold'
+        return result
 
 
 class PyScriptRenderer(AbstractRenderer):
@@ -39,11 +49,11 @@ class PyScriptRenderer(AbstractRenderer):
         self._ctx.fillStyle = self.BACK_GROUND_COLOR
         self._ctx.fillRect(0, 0, self.size.width, self.size.height)
 
-    def draw_text(self, text: str, position: tuple[int, int], font: str, color: Color) -> None:
+    def draw_text(self, text: str, position: tuple[int, int], font: Font, color: Color) -> None:
         """テキストの描画."""
         (x, y) = position
         text = text
-        self._ctx.font = font
+        self._ctx.font = str(font)
         self._ctx.fillStyle = self._color_to_style(color)
         self._ctx.fillText(text, x, y)
 
@@ -191,7 +201,8 @@ class GameView:
 
     def _display_debug(self) -> None:
         """デバッグ情報を画面に描画する."""
-        font = "10px sans-serif"
+
+        font = PyScriptFont(10, 'sans-serif')
         color = Color(0, 0, 0)
         self._renderer.draw_text(f'Time={self._model.time:.1f}', (0, 10), font, color)
         self._renderer.draw_text(f'MousePos={self._model.mouse_pos}', (0, 20), font, color)

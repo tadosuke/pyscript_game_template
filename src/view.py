@@ -5,6 +5,14 @@ import typing as tp
 from values import *
 
 
+@dataclass
+class Font:
+    """フォント設定."""
+    size: int
+    type: str
+    bold: bool = False
+
+
 class AbstractImageLoader:
     """画像読み込みの抽象クラス."""
 
@@ -50,6 +58,6 @@ class AbstractRenderer:
         """画像の描画."""
         pass
 
-    def draw_text(self, text: str, position: tuple[int, int], font: str, color: Color) -> None:
+    def draw_text(self, text: str, position: tuple[int, int], font: Font, color: Color) -> None:
         """テキストの描画."""
         pass
