@@ -112,13 +112,19 @@ class GameController:
     def mousedown(self, event: MouseEvent) -> None:
         """マウスボタンが押された."""
         virtual_key = MOUSE_BUTTON_TO_VK_DICT[event.button]
-        param = OperationParam(code=virtual_key, state=InputState.Press)
+        param = OperationParam(
+            code=virtual_key,
+            state=InputState.Press,
+            position=Position(event.x, event.y))
         self._model.operate(param)
 
     def mouseup(self, event: MouseEvent) -> None:
         """マウスボタンが離された."""
         virtual_key = MOUSE_BUTTON_TO_VK_DICT[event.button]
-        param = OperationParam(code=virtual_key, state=InputState.Release)
+        param = OperationParam(
+            code=virtual_key,
+            state=InputState.Release,
+            position=Position(event.x, event.y))
         self._model.operate(param)
 
     def mousemove(self, event: MouseEvent) -> None:
