@@ -62,10 +62,14 @@ class PyScriptRenderer(AbstractRenderer):
         self._ctx.fillStyle = self._color_to_style(color)
         self._ctx.fillText(text, x, y)
 
-    def draw_rect(self, rect: Rect, color: Color) -> None:
+    def draw_rect(self, rect: Rect, color: Color, fill=True) -> None:
         """矩形の描画."""
-        self._ctx.fillStyle = self._color_to_style(color)
-        self._ctx.fillRect(rect.position.x, rect.position.y, rect.size.width, rect.size.height)
+        if fill:
+            self._ctx.fillStyle = self._color_to_style(color)
+            self._ctx.fillRect(rect.position.x, rect.position.y, rect.size.width, rect.size.height)
+        else:
+            self._ctx.strokeStyle = self._color_to_style(color)
+            self._ctx.strokeRect(rect.position.x, rect.position.y, rect.size.width, rect.size.height)
 
     def draw_line(self, start_pos: tuple[int, int], end_pos: tuple[int, int], color: Color) -> None:
         """線の描画."""

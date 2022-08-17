@@ -49,7 +49,7 @@ class AbstractRenderer:
         """画面をクリアする."""
         pass
 
-    def draw_rect(self, rect: Rect, color: Color) -> None:
+    def draw_rect(self, rect: Rect, color: Color, fill=True) -> None:
         """矩形の描画."""
         pass
 
@@ -123,9 +123,7 @@ class GameView:
             font=Font(size=48, name='serif', bold=True),
             color=Color(0, 100, 0))
 
-        self._renderer.draw_rect(
-            rect=Rect(Position(300, 200), Size(100, 50)),
-            color=Color(0, 200, 0))
+        self._renderer.draw_rect(rect=Rect(Position(300, 200), Size(100, 50)), color=Color(0, 200, 0))
 
         image = self._image_loader.get_image('image.png')
         if image is not None:
@@ -150,3 +148,10 @@ class GameView:
         color = Color(0, 0, 0)
         self._renderer.draw_text(f'Time={self._model.time:.1f}', (0, 10), font, color)
         self._renderer.draw_text(f'MousePos={self._model.mouse_pos}', (0, 20), font, color)
+        self._display_debug_frame()
+
+    def _display_debug_frame(self) -> None:
+        """フレームのデバッグ表示."""
+        root_frame = self._model.root_frame
+        rect = root_frame.rect
+        self._renderer.draw_rect(rect, Color(0, 255, 255), fill=False)
