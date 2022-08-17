@@ -54,8 +54,19 @@ class Frame:
         callback = self._input_callback.get(param.code)
         if callback is None:
             return False
+        if not self._need_process(param):
+            return False
         processed = callback(param)
         return processed
+
+    def _need_process(self, param: OperationParam) -> bool:
+        """処理するべき入力か."""
+        position = param.position
+        if position is not None:
+            if not self._rect.contains_point(position):
+                return False
+
+        return True
 
     @property
     def rect(self) -> Rect:

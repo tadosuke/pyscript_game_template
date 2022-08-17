@@ -1,4 +1,6 @@
 """入力モジュール."""
+
+import typing as tp
 from dataclasses import dataclass
 from enum import Enum, auto
 
@@ -94,16 +96,16 @@ class OperationParam:
     """operateに渡すパラメーター."""
     code: VirtualKey
     state: InputState
-    position: Position = Position(0, 0)
+    position: tp.Optional[Position] = None
 
-    def is_press(self):
+    def is_press(self) -> bool:
         """押されているか."""
         return self.state == InputState.Press
 
-    def is_release(self):
+    def is_release(self) -> bool:
         """離されたか."""
         return self.state == InputState.Release
 
-    def is_repeat(self):
+    def is_repeat(self) -> bool:
         """リピートされたか."""
         return self.state == InputState.Repeat

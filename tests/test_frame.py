@@ -12,29 +12,42 @@ class TestFrame(unittest.TestCase):
     def test_case(self):
         frame1 = Frame(Rect(Position(10, 20), Size(30, 40)))
 
+        # 入力の登録
         self.assertIsNone(frame1._input_callback.get(VirtualKey.MouseLeft))
         frame1.connect_input(VirtualKey.MouseLeft, self._on_input)
         self.assertIsNotNone(frame1._input_callback.get(VirtualKey.MouseLeft))
 
+        # 登録したキー・範囲内
         param = OperationParam(
             code=VirtualKey.MouseLeft,
-            state=InputState.Press)
+            state=InputState.Press,
+            position=Position(11, 21))
         self.assertTrue(frame1.process_input(param))
 
+        # 登録したキー・範囲外
+        param = OperationParam(
+            code=VirtualKey.MouseLeft,
+            state=InputState.Press,
+            position=Position(9, 19))
+        self.assertFalse(frame1.process_input(param))
+
+        # 登録していないキー
         param = OperationParam(
             code=VirtualKey.MouseRight,
             state=InputState.Press)
         self.assertFalse(frame1.process_input(param))
 
+        # 親子付け
         frame2 = Frame(Rect(Position(30, 40), Size(50, 60)), parent=frame1)
         self.assertEqual(frame2.parent, frame1)
         self.assertEqual(frame1._children[0], frame2)
 
+        # 子フレームが受け取るか
         frame2.connect_input(VirtualKey.MouseMiddle, self._on_input)
         param = OperationParam(
             code=VirtualKey.MouseMiddle,
             state=InputState.Press)
-        self.assertTrue(frame1.process_input(param))  # 子フレームが受け取るか
+        self.assertTrue(frame1.process_input(param))
 
     @staticmethod
     def _on_input(param: OperationParam) -> bool:
