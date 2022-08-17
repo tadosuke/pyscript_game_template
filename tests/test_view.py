@@ -27,7 +27,7 @@ class TestView(unittest.TestCase):
     def test_game_view(self):
         result = True
         try:
-            model = GameModel()
+            model = GameModel(world_size=Size(600, 400))
             renderer = MockRenderer()
             loader = MockImageLoader([])
             view = GameView(model, renderer, loader)
@@ -35,7 +35,6 @@ class TestView(unittest.TestCase):
             result = False
         finally:
             self.assertTrue(result)
-
 
 if __name__ == '__main__':
     unittest.main()

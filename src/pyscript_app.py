@@ -12,6 +12,7 @@ from pyscript_controller import GameController
 from model import GameModel
 from pyscript_view import PyScriptRenderer, PyScriptImageLoader
 from pyscript_repository import PyScriptRepository
+from values import Size
 from view import GameView
 
 #: ゲームのFPS
@@ -33,7 +34,9 @@ async def main() -> None:
 
     try:
         repository = PyScriptRepository()
-        model = GameModel(repository)
+        model = GameModel(
+            world_size=Size(SCREEN_WIDTH, SCREEN_HEIGHT),
+            repository=repository)
         renderer = PyScriptRenderer(canvas)
         loader = PyScriptImageLoader(_PRELOAD_IMAGE_FILES)
         view = GameView(model, renderer, loader)

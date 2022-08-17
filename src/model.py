@@ -1,7 +1,8 @@
 """ゲームモデル."""
 
 from input import VirtualKey, OperationParam
-from values import Position
+from values import Position, Size, Rect
+from frame import Frame
 import typing as tp
 
 
@@ -18,15 +19,21 @@ class AbstractRepository:
 class GameModel:
     """ゲーム本体.
 
+    :param world_size: ゲーム空間の大きさ
     :param repository: リポジトリ
     """
 
-    def __init__(self, repository: AbstractRepository = None) -> None:
+    def __init__(
+            self,
+            world_size: Size,
+            repository: AbstractRepository = None) -> None:
         print('[GameModel] Create')
+        self._world_size = world_size
+        self._repository = repository
+        self._root_frame = self._create_root_frame()
         self.time: float = 0
         self.mouse_pos: Position = Position(0, 0)
         self.keys: dict[VirtualKey, bool] = {}
-        self._repository = repository
 
     def update(self, delta) -> None:
         """定期更新処理.
@@ -58,3 +65,15 @@ class GameModel:
         if self._repository is not None:
             value = self._repository.load(key='time', default=0)
             self.time = float(value)
+
+    @property
+    def root_frame(self) -> Frame:
+        """ルートフレーム."""
+        return self._root_frame
+
+    def _create_root_frame(self) -> Frame:
+        """ルートフレームを生成する."""
+        position = Position(0, 0)
+        rect = Rect(position, self._world_size)
+        frame = Frame(rect, None)
+        return frame
