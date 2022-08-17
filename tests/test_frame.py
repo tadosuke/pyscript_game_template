@@ -11,11 +11,7 @@ class TestFrame(unittest.TestCase):
 
     def test_case(self):
         frame1 = Frame(Rect(Position(10, 20), Size(30, 40)))
-
-        # 入力の登録
-        self.assertIsNone(frame1._input_callback.get(VirtualKey.MouseLeft))
         frame1.connect_input(VirtualKey.MouseLeft, self._on_input)
-        self.assertIsNotNone(frame1._input_callback.get(VirtualKey.MouseLeft))
 
         # 登録したキー・範囲内
         param = OperationParam(
@@ -29,12 +25,6 @@ class TestFrame(unittest.TestCase):
             code=VirtualKey.MouseLeft,
             state=InputState.Press,
             position=Position(9, 19))
-        self.assertFalse(frame1.process_input(param))
-
-        # 登録していないキー
-        param = OperationParam(
-            code=VirtualKey.MouseRight,
-            state=InputState.Press)
         self.assertFalse(frame1.process_input(param))
 
         # 親子付け

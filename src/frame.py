@@ -1,14 +1,8 @@
 """フレームモジュール."""
 from __future__ import annotations
 
-import typing as tp
 from values import Rect, Position, Size
-from input import OperationParam, VirtualKey
-
-#: 入力イベントに対するコールバック
-InputCallback = tp.Callable[[OperationParam], bool]
-#: 入力コールバック辞書
-InputCallbackDict = dict[VirtualKey, InputCallback]
+from input import OperationParam, VirtualKey, InputEvent
 
 
 class Frame:
@@ -21,7 +15,7 @@ class Frame:
             parent.append(self)
 
         self._children: list[Frame] = []
-        self._input_callback: InputCallbackDict = dict()
+        self._input_event = InputEvent()
 
     def append(self, child: Frame) -> None:
         """子フレームを追加する."""
@@ -29,15 +23,17 @@ class Frame:
             raise RuntimeError(f'Frame is already exists.')
         self._children.append(child)
 
-    def connect_input(self, code: VirtualKey, callback: InputCallback):
+    def connect_input(self, code: VirtualKey, callback: InputEvent.Callback) -> None:
         """入力コールバックを登録する."""
-        if code in self._input_callback.keys():
-            raise ValueError(f'code({code}) is already registered.')
-        self._input_callback[code] = callback
+        self._input_event.connect(code, callback)
 
-    def disconnect_input(self, code: VirtualKey):
+    def disconnect_input(self, code: VirtualKey) -> None:
         """入力コールバックの登録を解除する."""
-        del self._input_callback[code]
+        self._input_event.disconnect(code)
+
+    def disconnect_input_all(self, code: VirtualKey) -> None:
+        """全てのキーの入力コールバックの登録を解除する."""
+        self._input_event.disconnect_all()
 
     def process_input(self, param: OperationParam) -> bool:
         """入力を処理する.
@@ -51,13 +47,9 @@ class Frame:
                 return True
 
         # 自分
-        callback = self._input_callback.get(param.code)
-        if callback is None:
-            return False
         if not self._need_process(param):
             return False
-        processed = callback(param)
-        return processed
+        return self._input_event.process(param)
 
     def _need_process(self, param: OperationParam) -> bool:
         """処理するべき入力か."""
