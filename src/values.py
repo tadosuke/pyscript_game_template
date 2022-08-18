@@ -96,3 +96,16 @@ class Color:
     def a(self) -> int:
         return self._a
 
+
+class Font:
+    """フォント設定."""
+
+    def __init__(self, size: int, name: str, bold: bool = False):
+        if size <= 0:
+            raise ValueError()
+        if not name:
+            raise ValueError()
+
+        self.size = size
+        self.name = name
+        self.bold = bold
