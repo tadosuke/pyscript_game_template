@@ -2,9 +2,43 @@
 
 import typing as tp
 
+from input import VirtualKey, OperationParam
 from model import GameModel
 from values import *
 from interface import AbstractRenderer, AbstractImageLoader
+from frame import Frame
+
+
+class Button(Frame):
+
+    MARGIN_LEFT = 5
+
+    def __init__(
+            self,
+            rect: Rect,
+            renderer: AbstractRenderer,
+            text: str = '',
+            parent: Frame = None):
+        super().__init__(rect, parent)
+
+        self._text = text
+        self._renderer = renderer
+
+        self.connect_input(VirtualKey.MouseLeft, self._on_mouseleft)
+
+    def draw(self):
+        self._renderer.draw_rect(self.rect, Color(255, 255, 255))
+        self._renderer.draw_rect(self.rect, Color(128, 128, 128), fill=False)
+
+        font_size = 30
+        (x, y) = self.position.x, self.position.y
+        x += self.MARGIN_LEFT
+        y += font_size
+        self._renderer.draw_text(self._text, (x, y), Font(font_size, 'serif'), Color(0, 0, 0))
+
+    def _on_mouseleft(self, param: OperationParam):
+        print('Button clicked.')
+
 
 class GameView:
     """ゲームのビュー.
@@ -33,6 +67,12 @@ class GameView:
             raise ValueError('image_loader is None')
         self._image_loader = image_loader
         self._image_loader.load()
+
+        self._button = Button(
+            Rect(Position(400, 100), Size(120, 40)),
+            self._renderer,
+            'Button',
+            self._model.root_frame)
 
     def draw(self) -> None:
         """描画."""
@@ -67,6 +107,8 @@ class GameView:
                 image=image,
                 position=self._model.mouse_pos,
                 size=Size(32, 32))
+
+        self._button.draw()
 
         self._display_debug()
 
