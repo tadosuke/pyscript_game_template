@@ -24,6 +24,9 @@ class Button(Frame):
         self._text = text
         self._renderer = renderer
 
+        #: 押された時に呼ばれるコールバック
+        self.onpress: tp.Callable[..., None] = None
+
         self.connect_input(VirtualKey.MouseLeft, self._on_mouseleft)
 
     def draw(self):
@@ -38,7 +41,8 @@ class Button(Frame):
 
     def _on_mouseleft(self, param: OperationParam):
         if param.is_press():
-            print('Button pressed.')
+            if self.onpress is not None:
+                self.onpress()
 
 
 class GameView:
@@ -74,6 +78,7 @@ class GameView:
             self._renderer,
             'Button',
             self._model.root_frame)
+        self._button.onpress = self._on_button_pressed
 
     def draw(self) -> None:
         """描画."""
@@ -134,3 +139,6 @@ class GameView:
         root_frame = self._model.root_frame
         rect = root_frame.rect
         self._renderer.draw_rect(rect, Color(0, 255, 255), fill=False)
+
+    def _on_button_pressed(self) -> None:
+        print('Button Pressed.')
