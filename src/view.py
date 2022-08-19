@@ -37,7 +37,8 @@ class Button(Frame):
         self._renderer.draw_text(self._text, (x, y), Font(font_size, 'serif'), Color(0, 0, 0))
 
     def _on_mouseleft(self, param: OperationParam):
-        print('Button clicked.')
+        if param.is_press():
+            print('Button pressed.')
 
 
 class GameView:

@@ -53,6 +53,8 @@ class GameModel:
         elif param.code == VirtualKey.L and param.is_press():
             self.load()
 
+        self._root_frame.process_input(param)
+
         self.keys[param.code] = param.is_press()
 
     def save(self) -> None:
