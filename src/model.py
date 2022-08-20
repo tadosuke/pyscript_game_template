@@ -3,20 +3,11 @@
 import typing as tp
 
 from input import OperationParam
+from interface import AbstractRepository
 from values import Size
 
 # 型：ログ出力関数
 LogFuncType = tp.Callable[[str], None]
-
-
-class AbstractRepository:
-    """リポジトリの抽象クラス."""
-
-    def save(self, key: str, value: tp.Any):
-        pass
-
-    def load(self, key: str, default: tp.Any = None) -> tp.Optional[tp.Any]:
-        pass
 
 
 class GameModel:

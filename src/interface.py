@@ -4,6 +4,16 @@ import typing as tp
 from values import Size, Rect, Color, Position, Font
 
 
+class AbstractRepository:
+    """リポジトリの抽象クラス."""
+
+    def save(self, key: str, value: tp.Any):
+        pass
+
+    def load(self, key: str, default: tp.Any = None) -> tp.Optional[tp.Any]:
+        pass
+
+
 class AbstractImageLoader:
     """画像読み込みの抽象クラス."""
 

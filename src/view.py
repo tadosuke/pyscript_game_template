@@ -15,6 +15,7 @@ LogFuncType = tp.Callable[[str], None]
 
 
 class Button(Frame):
+    """ボタン."""
 
     MARGIN_LEFT = 5
 
@@ -35,6 +36,8 @@ class Button(Frame):
         self.connect_input(VirtualKey.MouseLeft, self._on_mouseleft)
 
     def draw(self):
+        """描画."""
+
         self._renderer.draw_rect(self.rect, Color(255, 255, 255))
         self._renderer.draw_rect(self.rect, Color(128, 128, 128), fill=False)
 
@@ -97,6 +100,7 @@ class GameView:
         return frame
 
     def _create_buttons(self):
+        """ボタンを生成する."""
         x = 10
         y = 50
         size = Size(130, 40)
@@ -187,4 +191,5 @@ class GameView:
         self._renderer.draw_rect(rect, Color(0, 255, 255), fill=False)
 
     def _on_button_pressed(self, button: Button) -> None:
+        """ボタンが押された."""
         self.log(f'Button({button.text}) Pressed.')
