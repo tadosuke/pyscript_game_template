@@ -26,6 +26,7 @@ class TestModel(unittest.TestCase):
     def test_game_model(self):
         model = GameModel(
             world_size=Size(600, 400),
+            log_func=None,
             repository=MockRepository())
         self.assertEqual(model._world_size, Size(600, 400))
         self.assertAlmostEqual(model.time, 0)

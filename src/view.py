@@ -78,7 +78,10 @@ class GameView:
         self._image_loader = image_loader
         self._image_loader.load()
 
-        self.log = log_func
+        if log_func is None:
+            self.log = lambda mes: print(mes)
+        else:
+            self.log = log_func
 
         self._root_frame = self._create_root_frame()
 

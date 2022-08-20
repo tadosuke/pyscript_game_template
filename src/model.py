@@ -33,7 +33,12 @@ class GameModel:
             repository: AbstractRepository = None) -> None:
         self._world_size = world_size
         self._repository = repository
-        self.log = log_func
+
+        if log_func is None:
+            self.log = lambda mes: print(mes)
+        else:
+            self.log = log_func
+
         self.time: float = 0
         self.mouse_pos: Position = Position(0, 0)
         self.keys: dict[VirtualKey, bool] = {}
