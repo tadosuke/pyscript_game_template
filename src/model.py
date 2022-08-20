@@ -41,10 +41,6 @@ class GameModel:
         """
         self.time += delta
 
-    def operate(self, param: OperationParam) -> None:
-        """入力時に外部から呼ばれる."""
-        pass
-
     def save(self) -> None:
         """保存."""
         if self._repository is not None:

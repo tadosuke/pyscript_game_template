@@ -43,14 +43,6 @@ class TestModel(unittest.TestCase):
         model.update(1.0)
         self.assertAlmostEqual(model.time, 1.0)
 
-        # 入力
-        param = OperationParam(
-            code=VirtualKey.MouseMove,
-            state=InputState.Press,
-            position=Position(10, 20))
-        model.operate(param)
-        self.assertEqual(model.mouse_pos, Position(10, 20))
-
 
 if __name__ == '__main__':
     unittest.main()
