@@ -1,5 +1,6 @@
 """ゲームビュー."""
 
+from __future__ import annotations
 import typing as tp
 
 from input import VirtualKey, OperationParam
@@ -25,11 +26,11 @@ class Button(Frame):
             parent: Frame = None):
         super().__init__(rect, parent)
 
-        self._text = text
+        self.text = text
         self._renderer = renderer
 
         #: 押された時に呼ばれるコールバック
-        self.onpress: tp.Callable[..., None] = None
+        self.onpress: tp.Callable[[Button], None] = None
 
         self.connect_input(VirtualKey.MouseLeft, self._on_mouseleft)
 
@@ -41,12 +42,12 @@ class Button(Frame):
         (x, y) = self.position.x, self.position.y
         x += self.MARGIN_LEFT
         y += font_size
-        self._renderer.draw_text(self._text, (x, y), Font(font_size, 'serif'), Color(0, 0, 0))
+        self._renderer.draw_text(self.text, (x, y), Font(font_size, 'serif'), Color(0, 0, 0))
 
     def _on_mouseleft(self, param: OperationParam):
         if param.is_press():
             if self.onpress is not None:
-                self.onpress()
+                self.onpress(self)
 
 
 class GameView:
@@ -79,13 +80,22 @@ class GameView:
 
         self.log = log_func
 
-        self._button = Button(
-            Rect(Position(400, 100), Size(120, 40)),
-            self._renderer,
-            'Button',
-            self._model.root_frame)
-        self._button.onpress = self._on_button_pressed
+        self._buttons: list[Button] = []
+        self._create_buttons()
 
+    def _create_buttons(self):
+        x = 10
+        y = 50
+        size = Size(130, 40)
+
+        for i in range(4):
+            button = Button(
+                Rect(Position(x, y + i*45), size),
+                self._renderer,
+                f'Button {i}',
+                self._model.root_frame)
+            button.onpress = self._on_button_pressed
+            self._buttons.append(button)
 
     def draw(self) -> None:
         """描画."""
@@ -97,22 +107,26 @@ class GameView:
             return
 
         self._renderer.draw_line(
-            start_pos=(100, 100),
-            end_pos=(200, 120),
+            start_pos=(300, 100),
+            end_pos=(400, 120),
             color=Color(200, 0, 0))
 
         self._renderer.draw_circle(
-            center=(200, 200),
+            center=(300, 200),
             radius=50,
             color=Color(0, 0, 200))
 
         self._renderer.draw_text(
             text='GameTemplate',
-            position=(50, 300),
+            position=(10, 380),
             font=Font(size=48, name='serif', bold=True),
             color=Color(0, 100, 0))
 
-        self._renderer.draw_rect(rect=Rect(Position(300, 200), Size(100, 50)), color=Color(0, 200, 0))
+        self._renderer.draw_rect(
+            rect=Rect(
+                Position(400, 250),
+                Size(100, 50)),
+            color=Color(0, 200, 0))
 
         image = self._image_loader.get_image('image.png')
         if image is not None:
@@ -121,7 +135,8 @@ class GameView:
                 position=self._model.mouse_pos,
                 size=Size(32, 32))
 
-        self._button.draw()
+        for button in self._buttons:
+            button.draw()
 
         self._display_debug()
 
@@ -147,5 +162,5 @@ class GameView:
         rect = root_frame.rect
         self._renderer.draw_rect(rect, Color(0, 255, 255), fill=False)
 
-    def _on_button_pressed(self) -> None:
-        self.log('Button Pressed.')
+    def _on_button_pressed(self, button: Button) -> None:
+        self.log(f'Button({button.text}) Pressed.')
