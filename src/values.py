@@ -1,14 +1,15 @@
 """値オブジェクトたち."""
 
 from __future__ import annotations
+from numbers import Real
 from dataclasses import dataclass
 
 
 @dataclass
 class Position:
     """座標."""
-    x: float = 0
-    y: float = 0
+    x: Real = 0
+    y: Real = 0
 
     def __str__(self):
         return f'({self.x}, {self.y})'
@@ -17,8 +18,8 @@ class Position:
 @dataclass
 class Size:
     """サイズ."""
-    width: int
-    height: int
+    width: Real
+    height: Real
 
 
 @dataclass
@@ -28,19 +29,19 @@ class Rect:
     size: Size
 
     @property
-    def left(self) -> float:
+    def left(self) -> Real:
         return self.position.x
 
     @property
-    def right(self) -> float:
+    def right(self) -> Real:
         return self.position.x + self.size.width
 
     @property
-    def top(self) -> float:
+    def top(self) -> Real:
         return self.position.y
 
     @property
-    def bottom(self) -> float:
+    def bottom(self) -> Real:
         return self.position.y + self.size.height
 
     @property
