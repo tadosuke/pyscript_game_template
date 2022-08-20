@@ -9,6 +9,10 @@ from interface import AbstractRenderer, AbstractImageLoader
 from frame import Frame
 
 
+# 型：ログ出力関数
+LogFuncType = tp.Callable[[str], None]
+
+
 class Button(Frame):
 
     MARGIN_LEFT = 5
@@ -57,8 +61,8 @@ class GameView:
             self,
             model: GameModel,
             renderer: AbstractRenderer,
-            image_loader: AbstractImageLoader) -> None:
-        print('[GameView] Create')
+            image_loader: AbstractImageLoader,
+            log_func: LogFuncType = None) -> None:
 
         if model is None:
             raise ValueError('model is None')
@@ -73,12 +77,15 @@ class GameView:
         self._image_loader = image_loader
         self._image_loader.load()
 
+        self.log = log_func
+
         self._button = Button(
             Rect(Position(400, 100), Size(120, 40)),
             self._renderer,
             'Button',
             self._model.root_frame)
         self._button.onpress = self._on_button_pressed
+
 
     def draw(self) -> None:
         """描画."""
@@ -141,4 +148,4 @@ class GameView:
         self._renderer.draw_rect(rect, Color(0, 255, 255), fill=False)
 
     def _on_button_pressed(self) -> None:
-        print('Button Pressed.')
+        self.log('Button Pressed.')

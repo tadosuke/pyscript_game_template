@@ -8,6 +8,7 @@ from js import (
     Element,
 )
 
+import pyscript_util
 from pyscript_controller import GameController
 from model import GameModel
 from pyscript_view import PyScriptRenderer, PyScriptImageLoader
@@ -36,10 +37,11 @@ async def main() -> None:
         repository = PyScriptRepository()
         model = GameModel(
             world_size=Size(SCREEN_WIDTH, SCREEN_HEIGHT),
+            log_func=pyscript_util.log,
             repository=repository)
         renderer = PyScriptRenderer(canvas)
         loader = PyScriptImageLoader(_PRELOAD_IMAGE_FILES)
-        view = GameView(model, renderer, loader)
+        view = GameView(model, renderer, loader, log_func=pyscript_util.log)
         controller = GameController(model, canvas)
     except ValueError as e:
         console.error(f'Failed to create GameObjects:{e}')

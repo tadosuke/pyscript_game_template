@@ -6,6 +6,10 @@ from frame import Frame
 import typing as tp
 
 
+# 型：ログ出力関数
+LogFuncType = tp.Callable[[str], None]
+
+
 class AbstractRepository:
     """リポジトリの抽象クラス."""
 
@@ -26,14 +30,17 @@ class GameModel:
     def __init__(
             self,
             world_size: Size,
+            log_func: LogFuncType = None,
             repository: AbstractRepository = None) -> None:
-        print('[GameModel] Create')
         self._world_size = world_size
         self._repository = repository
         self._root_frame = self._create_root_frame()
+        self.log = log_func
         self.time: float = 0
         self.mouse_pos: Position = Position(0, 0)
         self.keys: dict[VirtualKey, bool] = {}
+
+        self.log('[GameModel] Create')
 
     def update(self, delta) -> None:
         """定期更新処理.
