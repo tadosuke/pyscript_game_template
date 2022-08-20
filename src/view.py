@@ -84,6 +84,7 @@ class GameView:
             self.log = log_func
 
         self._root_frame = self._create_root_frame()
+        self._mouse_pos = Position(0, 0)
 
         self._buttons: list[Button] = []
         self._create_buttons()
@@ -144,7 +145,7 @@ class GameView:
         if image is not None:
             self._renderer.draw_image(
                 image=image,
-                position=self._model.mouse_pos,
+                position=self._mouse_pos,
                 size=Size(32, 32))
 
         for button in self._buttons:
@@ -154,6 +155,9 @@ class GameView:
 
     def operate(self, param: OperationParam) -> None:
         """入力時に外部から呼ばれる."""
+        if param.code == VirtualKey.MouseMove:
+            self._mouse_pos = param.position
+
         self._root_frame.process_input(param)
 
     def _show_loading(self) -> None:
@@ -169,7 +173,7 @@ class GameView:
         font = Font(size=10, name='sans-serif')
         color = Color(0, 0, 0)
         self._renderer.draw_text(f'Time={self._model.time:.1f}', (0, 10), font, color)
-        self._renderer.draw_text(f'MousePos={self._model.mouse_pos}', (0, 20), font, color)
+        self._renderer.draw_text(f'MousePos={self._mouse_pos}', (0, 20), font, color)
         self._display_debug_frame()
 
     def _display_debug_frame(self) -> None:

@@ -40,8 +40,6 @@ class GameModel:
             self.log = log_func
 
         self.time: float = 0
-        self.mouse_pos: Position = Position(0, 0)
-        self.keys: dict[VirtualKey, bool] = {}
 
         self.log('[GameModel] Create')
 
@@ -54,16 +52,10 @@ class GameModel:
 
     def operate(self, param: OperationParam) -> None:
         """入力時に外部から呼ばれる."""
-        if param.code == VirtualKey.MouseMove:
-            self.mouse_pos = param.position
-            return
-
         if param.code == VirtualKey.S and param.is_press():
             self.save()
         elif param.code == VirtualKey.L and param.is_press():
             self.load()
-
-        self.keys[param.code] = param.is_press()
 
     def save(self) -> None:
         """保存."""
