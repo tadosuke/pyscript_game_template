@@ -2,7 +2,6 @@
 
 import typing as tp
 
-from input import OperationParam
 from interface import AbstractRepository
 from values import Size
 

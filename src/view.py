@@ -1,14 +1,14 @@
 """ゲームビュー."""
 
 from __future__ import annotations
+
 import typing as tp
 
+from frame import Frame
 from input import VirtualKey, OperationParam
+from interface import AbstractRenderer, AbstractImageLoader
 from model import GameModel
 from values import *
-from interface import AbstractRenderer, AbstractImageLoader
-from frame import Frame
-
 
 # 型：ログ出力関数
 LogFuncType = tp.Callable[[str], None]
@@ -107,7 +107,7 @@ class GameView:
 
         for i in range(4):
             button = Button(
-                Rect(Position(x, y + i*45), size),
+                Rect(Position(x, y + i * 45), size),
                 self._renderer,
                 f'Button {i}',
                 self._root_frame)

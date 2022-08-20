@@ -1,8 +1,8 @@
 """フレームモジュール."""
 from __future__ import annotations
 
-from values import Rect, Position, Size
 from input import OperationParam, VirtualKey, InputEvent
+from values import Rect, Position, Size
 
 
 class Frame:

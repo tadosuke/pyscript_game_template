@@ -1,8 +1,9 @@
 """値オブジェクトたち."""
 
 from __future__ import annotations
-from numbers import Real
+
 from dataclasses import dataclass
+from numbers import Real
 
 
 @dataclass
@@ -46,8 +47,8 @@ class Rect:
 
     @property
     def center(self) -> Position:
-        x = self.position.x + self.size.width/2
-        y = self.position.y + self.size.height/2
+        x = self.position.x + self.size.width / 2
+        y = self.position.y + self.size.height / 2
         return Position(x, y)
 
     def contains_point(self, point: Position) -> bool:

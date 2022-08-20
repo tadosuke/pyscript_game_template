@@ -1,10 +1,9 @@
 """modelモジュールのテスト."""
 
 import unittest
-import typing as tp
 
-from model import *
 from input import *
+from model import *
 from values import *
 
 

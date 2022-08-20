@@ -3,8 +3,8 @@
 import unittest
 
 from frame import *
-from values import *
 from input import *
+from values import *
 
 
 class TestFrame(unittest.TestCase):
