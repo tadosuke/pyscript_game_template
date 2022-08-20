@@ -52,10 +52,7 @@ class GameModel:
 
     def operate(self, param: OperationParam) -> None:
         """入力時に外部から呼ばれる."""
-        if param.code == VirtualKey.S and param.is_press():
-            self.save()
-        elif param.code == VirtualKey.L and param.is_press():
-            self.load()
+        pass
 
     def save(self) -> None:
         """保存."""

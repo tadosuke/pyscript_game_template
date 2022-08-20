@@ -158,6 +158,11 @@ class GameView:
         if param.code == VirtualKey.MouseMove:
             self._mouse_pos = param.position
 
+        if param.code == VirtualKey.S and param.is_press():
+            self._model.save()
+        elif param.code == VirtualKey.L and param.is_press():
+            self._model.load()
+
         self._root_frame.process_input(param)
 
     def _show_loading(self) -> None:

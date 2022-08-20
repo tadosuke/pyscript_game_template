@@ -121,7 +121,7 @@ class GameController:
             code=virtual_key,
             state=InputState.Press,
             position=Position(event.x, event.y))
-        self._send_operation(param)
+        self._view.operate(param)
 
     def mouseup(self, event: MouseEvent) -> None:
         """マウスボタンが離された."""
@@ -130,7 +130,7 @@ class GameController:
             code=virtual_key,
             state=InputState.Release,
             position=Position(event.x, event.y))
-        self._send_operation(param)
+        self._view.operate(param)
 
     def mousemove(self, event: MouseEvent) -> None:
         """マウスカーソルが移動した."""
@@ -138,7 +138,7 @@ class GameController:
             code=VirtualKey.MouseMove,
             state=InputState.Press,
             position=Position(event.x, event.y))
-        self._send_operation(param)
+        self._view.operate(param)
 
     def keydown(self, event: KeyboardEvent) -> None:
         """キーが押された."""
@@ -149,18 +149,13 @@ class GameController:
             console.log(f'[GameController] keydown(key={event.key} -> VK={virtual_key})')
             state = InputState.Press
         param = OperationParam(code=virtual_key, state=state)
-        self._send_operation(param)
+        self._view.operate(param)
 
     def keyup(self, event: KeyboardEvent) -> None:
         """キーが離された."""
         virtual_key = key_to_vk(event.key)
         param = OperationParam(code=virtual_key, state=InputState.Release)
-        self._send_operation(param)
-
-    def _send_operation(self, param: OperationParam):
         self._view.operate(param)
-        self._model.operate(param)
-
 
     def _register_input_events(self, canvas: Element) -> None:
         """入力イベントを登録する."""
