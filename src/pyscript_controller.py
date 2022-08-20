@@ -12,7 +12,6 @@ from js import (
 )
 from pyodide import create_proxy
 
-from model import GameModel
 from view import GameView
 from values import Position
 from input import VirtualKey, InputState, OperationParam
@@ -95,16 +94,12 @@ def key_to_vk(key) -> VirtualKey:
 class GameController:
     """ゲームのコントローラー.
 
-    :param model: モデル
+    :param view: ビュー
     :param canvas: 入力イベントを登録するためのCanvas
     """
 
-    def __init__(self, model: GameModel, view: GameView, canvas: Element) -> None:
+    def __init__(self, view: GameView, canvas: Element) -> None:
         console.log('[GameController] Create')
-
-        if model is None:
-            raise ValueError('model is None')
-        self._model = model
 
         if view is None:
             raise ValueError('view is None')

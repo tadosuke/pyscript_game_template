@@ -1,9 +1,9 @@
 """ゲームモデル."""
 
-from input import VirtualKey, OperationParam
-from values import Position, Size
 import typing as tp
 
+from input import OperationParam
+from values import Size
 
 # 型：ログ出力関数
 LogFuncType = tp.Callable[[str], None]
