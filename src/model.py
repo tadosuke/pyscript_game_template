@@ -1,8 +1,7 @@
 """ゲームモデル."""
 
 from input import VirtualKey, OperationParam
-from values import Position, Size, Rect
-from frame import Frame
+from values import Position, Size
 import typing as tp
 
 
@@ -34,7 +33,6 @@ class GameModel:
             repository: AbstractRepository = None) -> None:
         self._world_size = world_size
         self._repository = repository
-        self._root_frame = self._create_root_frame()
         self.log = log_func
         self.time: float = 0
         self.mouse_pos: Position = Position(0, 0)
@@ -60,8 +58,6 @@ class GameModel:
         elif param.code == VirtualKey.L and param.is_press():
             self.load()
 
-        self._root_frame.process_input(param)
-
         self.keys[param.code] = param.is_press()
 
     def save(self) -> None:
@@ -74,15 +70,3 @@ class GameModel:
         if self._repository is not None:
             value = self._repository.load(key='time', default=0)
             self.time = float(value)
-
-    @property
-    def root_frame(self) -> Frame:
-        """ルートフレーム."""
-        return self._root_frame
-
-    def _create_root_frame(self) -> Frame:
-        """ルートフレームを生成する."""
-        position = Position(0, 0)
-        rect = Rect(position, self._world_size)
-        frame = Frame(rect, None)
-        return frame

@@ -80,8 +80,17 @@ class GameView:
 
         self.log = log_func
 
+        self._root_frame = self._create_root_frame()
+
         self._buttons: list[Button] = []
         self._create_buttons()
+
+    def _create_root_frame(self) -> Frame:
+        """ルートフレームを生成する."""
+        position = Position(0, 0)
+        rect = Rect(position, self._renderer.size)
+        frame = Frame(rect, None)
+        return frame
 
     def _create_buttons(self):
         x = 10
@@ -93,7 +102,7 @@ class GameView:
                 Rect(Position(x, y + i*45), size),
                 self._renderer,
                 f'Button {i}',
-                self._model.root_frame)
+                self._root_frame)
             button.onpress = self._on_button_pressed
             self._buttons.append(button)
 
@@ -140,6 +149,10 @@ class GameView:
 
         self._display_debug()
 
+    def operate(self, param: OperationParam) -> None:
+        """入力時に外部から呼ばれる."""
+        self._root_frame.process_input(param)
+
     def _show_loading(self) -> None:
         """ロード中表示."""
         self._renderer.draw_text(
@@ -158,8 +171,7 @@ class GameView:
 
     def _display_debug_frame(self) -> None:
         """フレームのデバッグ表示."""
-        root_frame = self._model.root_frame
-        rect = root_frame.rect
+        rect = self._root_frame.rect
         self._renderer.draw_rect(rect, Color(0, 255, 255), fill=False)
 
     def _on_button_pressed(self, button: Button) -> None:

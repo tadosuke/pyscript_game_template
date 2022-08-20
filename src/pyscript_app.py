@@ -42,7 +42,7 @@ async def main() -> None:
         renderer = PyScriptRenderer(canvas)
         loader = PyScriptImageLoader(_PRELOAD_IMAGE_FILES)
         view = GameView(model, renderer, loader, log_func=pyscript_util.log)
-        controller = GameController(model, canvas)
+        controller = GameController(model, view, canvas)
     except ValueError as e:
         console.error(f'Failed to create GameObjects:{e}')
         return

@@ -13,6 +13,7 @@ from js import (
 from pyodide import create_proxy
 
 from model import GameModel
+from view import GameView
 from values import Position
 from input import VirtualKey, InputState, OperationParam
 
@@ -98,12 +99,16 @@ class GameController:
     :param canvas: 入力イベントを登録するためのCanvas
     """
 
-    def __init__(self, model: GameModel, canvas: Element) -> None:
+    def __init__(self, model: GameModel, view: GameView, canvas: Element) -> None:
         console.log('[GameController] Create')
 
         if model is None:
             raise ValueError('model is None')
         self._model = model
+
+        if view is None:
+            raise ValueError('view is None')
+        self._view = view
 
         if canvas is None:
             raise ValueError('canvas is None')
@@ -116,7 +121,7 @@ class GameController:
             code=virtual_key,
             state=InputState.Press,
             position=Position(event.x, event.y))
-        self._model.operate(param)
+        self._send_operation(param)
 
     def mouseup(self, event: MouseEvent) -> None:
         """マウスボタンが離された."""
@@ -125,7 +130,7 @@ class GameController:
             code=virtual_key,
             state=InputState.Release,
             position=Position(event.x, event.y))
-        self._model.operate(param)
+        self._send_operation(param)
 
     def mousemove(self, event: MouseEvent) -> None:
         """マウスカーソルが移動した."""
@@ -133,7 +138,7 @@ class GameController:
             code=VirtualKey.MouseMove,
             state=InputState.Press,
             position=Position(event.x, event.y))
-        self._model.operate(param)
+        self._send_operation(param)
 
     def keydown(self, event: KeyboardEvent) -> None:
         """キーが押された."""
@@ -144,13 +149,18 @@ class GameController:
             console.log(f'[GameController] keydown(key={event.key} -> VK={virtual_key})')
             state = InputState.Press
         param = OperationParam(code=virtual_key, state=state)
-        self._model.operate(param)
+        self._send_operation(param)
 
     def keyup(self, event: KeyboardEvent) -> None:
         """キーが離された."""
         virtual_key = key_to_vk(event.key)
         param = OperationParam(code=virtual_key, state=InputState.Release)
+        self._send_operation(param)
+
+    def _send_operation(self, param: OperationParam):
+        self._view.operate(param)
         self._model.operate(param)
+
 
     def _register_input_events(self, canvas: Element) -> None:
         """入力イベントを登録する."""
